@@ -1,0 +1,35 @@
+@startuml
+
+left to right direction
+
+actor Maestro
+
+rectangle Maestro{
+
+usecase "Iniciar Sesión"
+usecase "Consultar Horario"
+usecase "Consultar Grupos"
+usecase "Consultar Materias"
+usecase "Registrar Actividad"
+usecase "Modificar Actividad"
+usecase "Asignar Rubros"
+usecase "Capturar Calificaciones"
+usecase "Validar Asistencia"
+usecase "Cerrar Parcial"
+usecase "Cerrar Semestre"
+
+}
+
+Maestro --> (Iniciar Sesión)
+Maestro --> (Consultar Horario)
+Maestro --> (Consultar Grupos)
+Maestro --> (Consultar Materias)
+Maestro --> (Registrar Actividad)
+Maestro --> (Modificar Actividad)
+Maestro --> (Asignar Rubros)
+Maestro --> (Capturar Calificaciones)
+Maestro --> (Validar Asistencia)
+Maestro --> (Cerrar Parcial)
+Maestro --> (Cerrar Semestre)
+
+@enduml

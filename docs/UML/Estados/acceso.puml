@@ -1,0 +1,24 @@
+@startuml
+title Estado del Acceso Biométrico
+
+[*] --> Esperando
+
+Esperando --> CapturandoRostro
+
+CapturandoRostro --> Procesando
+
+Procesando --> Coincidencia
+
+Procesando --> SinCoincidencia
+
+Coincidencia --> AccesoPermitido
+
+SinCoincidencia --> AccesoDenegado
+
+AccesoPermitido --> RegistrarEntrada
+
+RegistrarEntrada --> Esperando
+
+AccesoDenegado --> Esperando
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title DA-06 Gestión de Actividades
+
+start
+
+:Seleccionar grupo;
+
+:Seleccionar materia;
+
+:Crear actividad;
+
+:Asignar porcentaje;
+
+:Asignar fecha límite;
+
+:Guardar actividad;
+
+:Notificar alumnos;
+
+stop
+
+@enduml

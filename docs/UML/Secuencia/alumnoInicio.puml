@@ -1,0 +1,38 @@
+@startuml
+title SD-02 Primer Inicio
+
+actor Alumno
+participant App
+participant FastAPI
+database PostgreSQL
+collections Cloudinary
+
+Alumno -> App : Login
+
+App -> FastAPI : Validar primer acceso
+
+FastAPI -> PostgreSQL : consultar primer_login
+
+PostgreSQL --> FastAPI : TRUE
+
+FastAPI --> App : Solicitar cambio de contraseña
+
+Alumno -> App : Nueva contraseña
+
+Alumno -> App : Correo y teléfono
+
+Alumno -> App : Capturar selfie
+
+App -> Cloudinary : Subir fotografía
+
+Cloudinary --> App : URL
+
+App -> FastAPI : Guardar datos
+
+FastAPI -> PostgreSQL : Actualizar usuario
+
+PostgreSQL --> FastAPI : OK
+
+FastAPI --> App : Acceso concedido
+
+@enduml

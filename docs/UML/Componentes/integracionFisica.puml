@@ -1,0 +1,46 @@
+@startuml
+title Integración Física del Sistema
+
+node "Teléfono Alumno"{
+component "React Native"
+}
+
+node "Teléfono Maestro"{
+component "React Native"
+}
+
+node "Tablet Kiosco"{
+component "Expo Camera"
+}
+
+node "Servidor"{
+
+component FastAPI
+
+component OpenCV
+
+database PostgreSQL
+
+}
+
+cloud Supabase
+
+cloud Cloudinary
+
+node ESP32
+
+node Torniquete
+
+"React Native" --> FastAPI
+"Expo Camera" --> FastAPI
+
+FastAPI --> PostgreSQL
+FastAPI --> Supabase
+FastAPI --> Cloudinary
+FastAPI --> OpenCV
+
+OpenCV --> ESP32
+
+ESP32 --> Torniquete
+
+@enduml

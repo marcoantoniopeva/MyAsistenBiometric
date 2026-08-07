@@ -1,0 +1,22 @@
+@startuml
+title DA-10 Modificación Extraordinaria
+
+start
+
+:Control Escolar abre acta;
+
+:Seleccionar alumno;
+
+:Modificar calificación;
+
+:Capturar motivo obligatorio;
+
+:Guardar modificación;
+
+:Registrar auditoría;
+
+:Actualizar historial;
+
+stop
+
+@enduml

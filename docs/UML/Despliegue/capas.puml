@@ -1,0 +1,56 @@
+@startuml
+title Arquitectura Física por Capas
+
+package "Clientes"{
+
+node "Alumno"
+
+node "Maestro"
+
+node "Control Escolar"
+
+node "Dirección"
+
+node "Kiosco"
+
+}
+
+package "Backend"{
+
+node "FastAPI"
+
+}
+
+package "Persistencia"{
+
+database PostgreSQL
+
+database "Supabase Auth"
+
+folder Cloudinary
+
+}
+
+package "Hardware"{
+
+node ESP32
+
+node Torniquete
+
+}
+
+Alumno --> FastAPI
+Maestro --> FastAPI
+"Control Escolar" --> FastAPI
+"Dirección" --> FastAPI
+Kiosco --> FastAPI
+
+FastAPI --> PostgreSQL
+FastAPI --> "Supabase Auth"
+FastAPI --> Cloudinary
+
+FastAPI --> ESP32
+
+ESP32 --> Torniquete
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+title DA-02 Primer Inicio
+
+start
+
+:Login exitoso;
+
+if (¿Primer acceso?) then (Sí)
+
+:Solicitar cambio de contraseña;
+
+:Registrar correo;
+
+:Registrar teléfono;
+
+:Capturar selfie;
+
+:Subir imagen;
+
+:Generar embedding facial;
+
+:Guardar información;
+
+:Acceso al sistema;
+
+else
+
+:Entrar al Dashboard;
+
+endif
+
+stop
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+title Componentes Internos de FastAPI
+
+package "FastAPI Backend" {
+
+component "API Gateway"
+
+component "Authentication"
+
+component "User Management"
+
+component "Academic"
+
+component "Attendance"
+
+component "Face Recognition"
+
+component "Evaluation"
+
+component "Enrollment"
+
+component "Vehicle"
+
+component "Reporting"
+
+component "Notification"
+
+component "Cloudinary"
+
+component "Repositories"
+
+}
+
+"API Gateway" --> Authentication
+"API Gateway" --> "User Management"
+"API Gateway" --> Academic
+"API Gateway" --> Attendance
+"API Gateway" --> "Face Recognition"
+"API Gateway" --> Evaluation
+"API Gateway" --> Enrollment
+"API Gateway" --> Vehicle
+"API Gateway" --> Reporting
+"API Gateway" --> Notification
+"API Gateway" --> Cloudinary
+
+Repositories --> PostgreSQL
+
+@enduml

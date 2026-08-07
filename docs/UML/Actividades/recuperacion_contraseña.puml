@@ -1,0 +1,38 @@
+@startuml
+title DA-09 Recuperación de Contraseña
+
+start
+
+:Ingresar correo;
+
+:Validar usuario;
+
+if (¿Existe?) then (Sí)
+
+:Enviar código;
+
+:Capturar código;
+
+if (¿Código correcto?) then (Sí)
+
+:Ingresar nueva contraseña;
+
+:Guardar contraseña;
+
+:Mostrar éxito;
+
+else
+
+:Mostrar código incorrecto;
+
+endif
+
+else
+
+:Usuario inexistente;
+
+endif
+
+stop
+
+@enduml

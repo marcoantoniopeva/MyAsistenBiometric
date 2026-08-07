@@ -1,0 +1,87 @@
+@startuml
+title Diagrama de Despliegue - Plataforma de Asistencia Biométrica Escolar
+
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodeStyle rectangle
+
+node "Dispositivo Móvil\n(Android / iOS)" as Mobile {
+
+    artifact "App React Native\nExpo"
+
+    artifact "Expo Camera"
+
+    artifact "Expo Local Authentication"
+
+    artifact "Expo Location"
+
+}
+
+node "Tablet Kiosco" as Kiosk {
+
+    artifact "Modo Kiosco"
+
+    artifact "Expo Camera"
+
+}
+
+cloud "Internet" as Internet
+
+node "Servidor Backend" as Backend {
+
+    artifact "FastAPI"
+
+    artifact "Uvicorn"
+
+    artifact "OpenCV"
+
+    artifact "face_recognition"
+
+    artifact "JWT Service"
+
+    artifact "Business Logic"
+
+}
+
+cloud "Supabase" {
+
+    database "PostgreSQL"
+
+    database "Supabase Auth"
+
+}
+
+cloud "Cloudinary" {
+
+    artifact "Almacenamiento\nImágenes y PDFs"
+
+}
+
+node "ESP32" {
+
+    artifact "HTTP Client"
+
+}
+
+node "Torniquete" {
+
+    artifact "Electroimán"
+
+}
+
+Mobile --> Internet
+Kiosk --> Internet
+
+Internet --> Backend
+
+Backend --> PostgreSQL
+
+Backend --> "Supabase Auth"
+
+Backend --> Cloudinary
+
+Backend --> ESP32
+
+ESP32 --> Torniquete
+
+@enduml

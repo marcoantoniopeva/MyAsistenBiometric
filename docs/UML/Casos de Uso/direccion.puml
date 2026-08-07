@@ -1,0 +1,21 @@
+@startuml
+
+actor Director
+
+rectangle Dirección{
+
+usecase "Consultar Reportes"
+usecase "Seguimiento de Alumnos"
+usecase "Seguimiento de Maestros"
+usecase "Consultar Indicadores"
+usecase "Suspender Plataforma"
+
+}
+
+Director --> (Consultar Reportes)
+Director --> (Seguimiento de Alumnos)
+Director --> (Seguimiento de Maestros)
+Director --> (Consultar Indicadores)
+Director --> (Suspender Plataforma)
+
+@enduml

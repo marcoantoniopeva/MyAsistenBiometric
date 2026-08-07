@@ -1,0 +1,103 @@
+@startuml
+title Arquitectura Completa por Paquetes
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+package "Frontend" {
+
+package Login
+
+package Alumno
+
+package Maestro
+
+package Dirección
+
+package Control Escolar
+
+package Kiosco
+
+package Components
+
+package Navigation
+
+package Hooks
+
+package Context
+
+package API Client
+
+}
+
+package "Backend" {
+
+package Controllers
+
+package Routes
+
+package DTOs
+
+package Services
+
+package Authentication
+
+package FaceRecognition
+
+package BusinessRules
+
+package Repositories
+
+package ORM
+
+package Middleware
+
+package Security
+
+package Reports
+
+}
+
+package "Persistencia" {
+
+package PostgreSQL
+
+package SupabaseAuth
+
+package Cloudinary
+
+}
+
+package "Hardware" {
+
+package ESP32
+
+package Relay
+
+package Torniquete
+
+package Cámara
+
+}
+
+package "Servicios Externos" {
+
+package SMTP
+
+package SMS
+
+package OpenStreetMap
+
+package FaceRecognition
+
+}
+
+Frontend --> Backend
+
+Backend --> Persistencia
+
+Backend --> Hardware
+
+Backend --> "Servicios Externos"
+
+@enduml

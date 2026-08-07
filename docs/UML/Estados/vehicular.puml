@@ -1,0 +1,18 @@
+@startuml
+title Estado del Pase Vehicular
+
+[*] --> NoAsignado
+
+NoAsignado --> Activo
+
+Activo --> Suspendido
+
+Suspendido --> Activo
+
+Activo --> Vencido
+
+Vencido --> Renovado
+
+Renovado --> Activo
+
+@enduml

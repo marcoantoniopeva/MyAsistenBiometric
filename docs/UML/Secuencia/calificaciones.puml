@@ -1,0 +1,22 @@
+@startuml
+title SD-07 Captura de Calificaciones
+
+actor Maestro
+
+participant App
+
+participant FastAPI
+
+database PostgreSQL
+
+Maestro -> App : Capturar notas
+
+App -> FastAPI : Enviar calificaciones
+
+FastAPI -> PostgreSQL : Actualizar
+
+PostgreSQL --> FastAPI : OK
+
+FastAPI --> App : Calificaciones guardadas
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title DA-12 QR Temporal
+
+start
+
+:Solicitar QR;
+
+:Generar código aleatorio;
+
+:Guardar expiración;
+
+:Mostrar QR;
+
+if (¿Expiró?) then (Sí)
+
+:Invalidar código;
+
+endif
+
+stop
+
+@enduml

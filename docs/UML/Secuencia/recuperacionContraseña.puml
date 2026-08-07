@@ -1,0 +1,34 @@
+@startuml
+title SD-09 Recuperar Contraseña
+
+actor Usuario
+
+participant App
+
+participant FastAPI
+
+participant Email
+
+database PostgreSQL
+
+Usuario -> App : Recuperar contraseña
+
+App -> FastAPI : Solicitud
+
+FastAPI -> PostgreSQL : Buscar usuario
+
+PostgreSQL --> FastAPI : Email
+
+FastAPI -> Email : Enviar código
+
+Email --> Usuario : Código
+
+Usuario -> App : Nueva contraseña
+
+App -> FastAPI : Actualizar
+
+FastAPI -> PostgreSQL : Guardar hash
+
+PostgreSQL --> FastAPI : OK
+
+@enduml

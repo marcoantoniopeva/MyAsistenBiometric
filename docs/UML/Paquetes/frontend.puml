@@ -1,0 +1,53 @@
+@startuml
+title Paquetes Frontend React Native
+
+skinparam packageStyle rectangle
+
+package "React Native" {
+
+    package screens {
+
+        package Login {}
+        package Alumno {}
+        package Maestro {}
+        package ControlEscolar {}
+        package Direccion {}
+        package Kiosco {}
+
+    }
+
+    package components {
+
+        package Buttons {}
+        package Cards {}
+        package Inputs {}
+        package Lists {}
+        package Modals {}
+
+    }
+
+    package navigation {}
+
+    package hooks {}
+
+    package context {}
+
+    package services {}
+
+    package utils {}
+
+    package assets {}
+
+}
+
+screens --> navigation
+
+screens --> services
+
+screens --> components
+
+services --> context
+
+hooks --> services
+
+@enduml

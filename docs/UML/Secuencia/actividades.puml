@@ -1,0 +1,22 @@
+@startuml
+title SD-05 Crear Actividad
+
+actor Maestro
+
+participant App
+
+participant FastAPI
+
+database PostgreSQL
+
+Maestro -> App : Crear actividad
+
+App -> FastAPI : Datos actividad
+
+FastAPI -> PostgreSQL : Insert actividad
+
+PostgreSQL --> FastAPI : OK
+
+FastAPI --> App : Actividad creada
+
+@enduml

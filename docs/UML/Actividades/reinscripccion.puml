@@ -1,0 +1,30 @@
+@startuml
+title DA-08 Reinscripción
+
+start
+
+:Seleccionar materias;
+
+:Subir comprobante;
+
+:Guardar comprobante;
+
+:Registrar solicitud;
+
+:Estado Pendiente;
+
+:Esperar validación de Control Escolar;
+
+if (¿Documentos físicos entregados?) then (Sí)
+
+:Cambiar estado a Inscrito;
+
+else
+
+:Mantener Pendiente;
+
+endif
+
+stop
+
+@enduml

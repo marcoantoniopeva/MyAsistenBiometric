@@ -1,0 +1,22 @@
+@startuml
+title Estado de la Reinscripción
+
+[*] --> Pendiente
+
+Pendiente : Solicitud creada
+
+Pendiente --> PagoSubido
+
+PagoSubido --> Revision
+
+Revision --> DocumentosPendientes
+
+DocumentosPendientes --> Inscrito : Documentos entregados
+
+Revision --> Rechazado : Pago inválido
+
+Rechazado --> PagoSubido : Nuevo comprobante
+
+Inscrito --> [*]
+
+@enduml

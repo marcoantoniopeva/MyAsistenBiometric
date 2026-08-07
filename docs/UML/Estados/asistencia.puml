@@ -1,0 +1,20 @@
+@startuml
+title Estado de una Asistencia
+
+[*] --> NoRegistrada
+
+NoRegistrada --> BiometriaValidada
+
+BiometriaValidada --> GPSValidado
+
+GPSValidado --> Registrada
+
+Registrada --> ValidadaProfesor
+
+Registrada --> Rechazada
+
+ValidadaProfesor --> [*]
+
+Rechazada --> [*]
+
+@enduml

@@ -1,0 +1,310 @@
+@startuml
+title Diagrama de Clases - Plataforma de Asistencia Biométrica Escolar
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+'=========================
+' ENUMERACIONES
+'=========================
+
+enum Rol {
+    ALUMNO
+    MAESTRO
+    CONTROL_ESCOLAR
+    DIRECCION
+    KIOSCO
+}
+
+enum EstadoAsistencia {
+    PENDIENTE
+    PRESENTE
+    AUSENTE
+    JUSTIFICADA
+}
+
+enum EstadoReinscripcion {
+    PENDIENTE
+    VALIDADA
+    RECHAZADA
+}
+
+enum TipoActividad {
+    TAREA
+    EXAMEN
+    PROYECTO
+    PRACTICA
+    PARTICIPACION
+}
+
+'=========================
+' USUARIOS
+'=========================
+
+abstract class Usuario{
+
+-id: UUID
+-nombre: String
+-apellidoPaterno: String
+-apellidoMaterno: String
+-email: String
+-telefono: String
+-passwordHash: String
+-fotoPerfil: String
+-activo: Boolean
+
++login()
++logout()
++cambiarPassword()
++recuperarPassword()
+
+}
+
+class Alumno{
+
++matricula:String
++semestre:int
++promedio:Decimal
+
++registrarAsistencia()
++subirEvidencia()
++consultarKardex()
++consultarCreditos()
++reinscribirse()
+
+}
+
+class Maestro{
+
++numeroEmpleado:String
++especialidad:String
+
++crearActividad()
++capturarCalificaciones()
++validarAsistencia()
+
+}
+
+class ControlEscolar{
+
++registrarAlumno()
++registrarMaestro()
++validarPago()
++asignarCreditos()
+
+}
+
+class Director{
+
++consultarReportes()
++suspenderSistema()
+
+}
+
+Usuario <|-- Alumno
+Usuario <|-- Maestro
+Usuario <|-- ControlEscolar
+Usuario <|-- Director
+
+'=========================
+' ACADEMICO
+'=========================
+
+class Carrera{
++id:int
++nombre:String
++siglas:String
+}
+
+class Grupo{
++id:int
++nombre:String
+}
+
+class Materia{
++id:int
++nombre:String
++creditos:int
+}
+
+class Horario{
+
++dia:String
++horaInicio:Time
++horaFin:Time
+
+}
+
+Carrera "1" -- "*" Alumno
+Carrera "1" -- "*" Maestro
+Carrera "1" -- "*" Materia
+
+Grupo "1" -- "*" Alumno
+Grupo "1" -- "*" Horario
+
+Materia "1" -- "*" Horario
+
+Maestro "*" -- "*" Materia
+
+'=========================
+' ASISTENCIAS
+'=========================
+
+class Asistencia{
+
++id:int
++fecha:Date
++hora:Time
++latitud:Double
++longitud:Double
++estado:EstadoAsistencia
+
+}
+
+Alumno "1" -- "*" Asistencia
+
+Materia "1" -- "*" Asistencia
+
+Maestro "1" -- "*" Asistencia
+
+'=========================
+' ACTIVIDADES
+'=========================
+
+class Actividad{
+
++id:int
++nombre:String
++descripcion:String
++valor:Decimal
++fechaEntrega:Date
++tipo:TipoActividad
+
+}
+
+class Evidencia{
+
++id:int
++archivo:String
++fechaEntrega:DateTime
+
+}
+
+Materia "1" -- "*" Actividad
+
+Actividad "1" -- "*" Evidencia
+
+Alumno "1" -- "*" Evidencia
+
+'=========================
+' CALIFICACIONES
+'=========================
+
+class Calificacion{
+
++id:int
++calificacion:Decimal
+
+}
+
+Alumno "1" -- "*" Calificacion
+
+Actividad "1" -- "*" Calificacion
+
+Maestro "1" -- "*" Calificacion
+
+'=========================
+' REINSCRIPCION
+'=========================
+
+class Reinscripcion{
+
++id:int
++fecha:Date
++estado:EstadoReinscripcion
+
+}
+
+class ComprobantePago{
+
++id:int
++archivo:String
+
+}
+
+Alumno "1" -- "*" Reinscripcion
+
+Reinscripcion "1" -- "1" ComprobantePago
+
+'=========================
+' CREDENCIALES
+'=========================
+
+class CredencialDigital{
+
++codigoQR:String
++vigencia:Date
+
+}
+
+Alumno "1" -- "1" CredencialDigital
+
+Maestro "1" -- "1" CredencialDigital
+
+'=========================
+' VEHICULOS
+'=========================
+
+class Vehiculo{
+
++placas:String
++tipo:String
++vigencia:Date
+
+}
+
+Usuario "1" -- "0..1" Vehiculo
+
+'=========================
+' DOCUMENTOS
+'=========================
+
+class Constancia{
+
++folio:String
++tipo:String
++fechaSolicitud:Date
+
+}
+
+Alumno "1" -- "*" Constancia
+
+'=========================
+' BIOMETRIA
+'=========================
+
+class Biometria{
+
++embedding:Vector128
++ultimaActualizacion:Date
+
+}
+
+Alumno "1" -- "1" Biometria
+
+'=========================
+' REPORTES
+'=========================
+
+class Reporte{
+
++generarPDF()
+
+}
+
+Director --> Reporte
+
+ControlEscolar --> Reporte
+
+@enduml

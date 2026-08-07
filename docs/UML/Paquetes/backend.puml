@@ -1,0 +1,71 @@
+@startuml
+title Paquetes del Backend (FastAPI)
+
+skinparam packageStyle rectangle
+
+package "FastAPI" {
+
+    package api {
+
+        package auth {}
+        package usuarios {}
+        package alumnos {}
+        package maestros {}
+        package materias {}
+        package grupos {}
+        package asistencias {}
+        package actividades {}
+        package calificaciones {}
+        package reinscripciones {}
+        package reportes {}
+        package vehiculos {}
+
+    }
+
+    package services {
+
+        package biometric_service {}
+        package notification_service {}
+        package qr_service {}
+        package cloudinary_service {}
+        package auth_service {}
+
+    }
+
+    package repositories {
+
+        package usuario_repository {}
+        package asistencia_repository {}
+        package actividad_repository {}
+        package calificacion_repository {}
+        package reporte_repository {}
+
+    }
+
+    package database {}
+
+    package models {}
+
+    package schemas {}
+
+    package security {}
+
+    package middleware {}
+
+}
+
+api --> services
+
+services --> repositories
+
+repositories --> database
+
+models --> database
+
+schemas --> api
+
+security --> api
+
+middleware --> api
+
+@enduml

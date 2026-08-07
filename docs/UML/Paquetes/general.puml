@@ -1,0 +1,66 @@
+@startuml
+title Diagrama de Paquetes - Plataforma de Asistencia Biométrica Escolar
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+package "Frontend\n(React Native + Expo)" {
+
+    package "Autenticación" {}
+    package "Alumno" {}
+    package "Maestro" {}
+    package "Control Escolar" {}
+    package "Dirección" {}
+    package "Kiosco" {}
+    package "Componentes UI" {}
+    package "Navegación" {}
+    package "Servicios HTTP" {}
+}
+
+package "Backend\n(FastAPI)" {
+
+    package "API REST" {}
+    package "Autenticación JWT" {}
+    package "Usuarios" {}
+    package "Académico" {}
+    package "Asistencia" {}
+    package "Calificaciones" {}
+    package "Reinscripción" {}
+    package "Credenciales" {}
+    package "Vehículos" {}
+    package "Biometría" {}
+    package "Reportes" {}
+    package "Notificaciones" {}
+}
+
+package "Persistencia" {
+
+    package "PostgreSQL" {}
+    package "Supabase Auth" {}
+    package "Cloudinary" {}
+}
+
+package "Hardware" {
+
+    package "ESP32" {}
+    package "Torniquete" {}
+    package "Cámara" {}
+}
+
+package "Servicios Externos" {
+
+    package "Face Recognition" {}
+    package "OpenStreetMap" {}
+    package "SMTP" {}
+    package "SMS" {}
+}
+
+"Frontend\n(React Native + Expo)" --> "Backend\n(FastAPI)"
+
+"Backend\n(FastAPI)" --> Persistencia
+
+"Backend\n(FastAPI)" --> Hardware
+
+"Backend\n(FastAPI)" --> "Servicios Externos"
+
+@enduml

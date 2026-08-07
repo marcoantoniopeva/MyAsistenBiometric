@@ -1,0 +1,38 @@
+@startuml
+title SD-03 Registro de Asistencia
+
+actor Alumno
+
+participant "React Native" as App
+
+participant "Expo Local Authentication" as FaceID
+
+participant "Expo Location" as GPS
+
+participant FastAPI
+
+database PostgreSQL
+
+Alumno -> App : Presiona Asistencia
+
+App -> FaceID : Validar huella/FaceID
+
+FaceID --> App : Correcto
+
+App -> GPS : Obtener ubicación
+
+GPS --> App : Lat/Lon
+
+App -> FastAPI : Registrar asistencia
+
+FastAPI -> PostgreSQL : Validar horario
+
+PostgreSQL --> FastAPI : Curso activo
+
+FastAPI -> PostgreSQL : Guardar asistencia
+
+PostgreSQL --> FastAPI : OK
+
+FastAPI --> App : Asistencia registrada
+
+@enduml

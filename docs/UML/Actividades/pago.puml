@@ -1,0 +1,24 @@
+@startuml
+title DA-11 Validación de Pago
+
+start
+
+:Consultar solicitudes pendientes;
+
+:Verificar comprobante;
+
+if (¿Pago válido?) then (Sí)
+
+:Actualizar estatus;
+
+:Habilitar reinscripción;
+
+else
+
+:Solicitar corrección;
+
+endif
+
+stop
+
+@enduml

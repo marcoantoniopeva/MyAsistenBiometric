@@ -1,0 +1,28 @@
+@startuml
+title DA-07 Captura de Calificaciones
+
+start
+
+:Seleccionar grupo;
+
+:Seleccionar actividad;
+
+:Capturar calificaciones;
+
+if (¿Periodo abierto?) then (Sí)
+
+:Guardar calificaciones;
+
+:Actualizar promedio;
+
+:Mostrar éxito;
+
+else
+
+:Mostrar periodo cerrado;
+
+endif
+
+stop
+
+@enduml

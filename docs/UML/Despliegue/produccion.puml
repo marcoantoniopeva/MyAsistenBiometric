@@ -1,0 +1,52 @@
+@startuml
+title Despliegue en Producción
+
+skinparam shadowing false
+
+cloud "Usuarios"{
+
+node "Android"
+
+node "iPhone"
+
+node "Tablet"
+
+}
+
+cloud Internet
+
+node "Servidor Linux\nUbuntu / Debian"{
+
+artifact "FastAPI"
+
+artifact "Uvicorn"
+
+artifact "OpenCV"
+
+artifact "face_recognition"
+
+}
+
+cloud Supabase{
+
+database PostgreSQL
+
+database Auth
+
+}
+
+cloud Cloudinary
+
+Android --> Internet
+iPhone --> Internet
+Tablet --> Internet
+
+Internet --> FastAPI
+
+FastAPI --> PostgreSQL
+
+FastAPI --> Auth
+
+FastAPI --> Cloudinary
+
+@enduml

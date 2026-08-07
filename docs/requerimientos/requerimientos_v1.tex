@@ -1,0 +1,2215 @@
+\documentclass[12pt,a4paper]{article}
+
+% =========================================================
+% PAQUETES
+% =========================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% =========================================================
+% CONFIGURACIÓN GENERAL
+% =========================================================
+\geometry{
+top=2.5cm,
+bottom=2.5cm,
+left=2.8cm,
+right=2.8cm
+}
+
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\definecolor{primary}{HTML}{17365D}
+\definecolor{secondary}{HTML}{2F75B5}
+\definecolor{lightgray}{HTML}{F2F2F2}
+\definecolor{darkgray}{HTML}{404040}
+\definecolor{requirement}{HTML}{EAF2F8}
+\definecolor{warning}{HTML}{FFF2CC}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=primary,
+urlcolor=secondary,
+citecolor=primary,
+pdftitle={Especificación de Requisitos de Software},
+pdfauthor={Proyecto de Asistencia Biométrica Escolar}
+}
+
+\titleformat{\section}
+{\Large\bfseries\color{primary}}
+{\thesection.}{0.5em}{}
+
+\titleformat{\subsection}
+{\large\bfseries\color{secondary}}
+{\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+{\normalsize\bfseries\color{darkgray}}
+{\thesubsubsection.}{0.5em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Plataforma de Asistencia Biométrica Escolar}
+\fancyhead[R]{Especificación de Requisitos}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+
+% =========================================================
+% COMANDOS PERSONALIZADOS
+% =========================================================
+\newcommand{\RF}[1]{\textbf{\color{primary}RF-#1}}
+\newcommand{\RNF}[1]{\textbf{\color{secondary}RNF-#1}}
+\newcommand{\RN}[1]{\textbf{\color{darkgray}RN-#1}}
+
+\newenvironment{requisito}[1]
+{
+\begin{center}
+\begin{minipage}{0.96\textwidth}
+\colorbox{requirement}{
+\begin{minipage}{0.94\textwidth}
+\textbf{#1}
+\end{minipage}
+}
+\vspace{2mm}
+}
+{
+\end{minipage}
+\end{center}
+}
+
+% =========================================================
+% DOCUMENTO
+% =========================================================
+\begin{document}
+
+% =========================================================
+% PORTADA
+% =========================================================
+\begin{titlepage}
+\centering
+
+```
+\vspace*{1.5cm}
+
+{\Huge\bfseries\color{primary}
+Especificación de Requisitos de Software\par}
+
+\vspace{0.8cm}
+
+{\LARGE
+Plataforma de Asistencia Escolar Biométrica\\
+y Gestión Académica\par}
+
+\vspace{1.5cm}
+
+\rule{\textwidth}{1.2pt}
+
+\vspace{1cm}
+
+\begin{tabular}{rl}
+    \textbf{Tipo de documento:} & Especificación de Requisitos de Software\\
+    \textbf{Versión:} & 1.0\\
+    \textbf{Estado:} & Documento base para análisis y desarrollo\\
+    \textbf{Plataformas objetivo:} & Android, iOS y dispositivos de acceso\\
+    \textbf{Arquitectura propuesta:} & Aplicación móvil y servicios en la nube\\
+\end{tabular}
+
+\vfill
+
+{\large
+Documento estructurado con base en prácticas de especificación\\
+de requisitos de software y criterios de calidad verificables.\par}
+
+\vspace{1cm}
+
+{\large \today\par}
+```
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% =========================================================
+\section{Introducción}
+% =========================================================
+
+\subsection{Propósito}
+
+El propósito de este documento es definir formalmente los requisitos funcionales,
+no funcionales, reglas de negocio, actores, restricciones y criterios de calidad
+de una plataforma de asistencia biométrica escolar y gestión académica.
+
+El documento servirá como referencia para:
+
+\begin{itemize}[leftmargin=*]
+\item El análisis y diseño de la arquitectura de software.
+\item La construcción del producto.
+\item La planificación del desarrollo.
+\item La creación del backlog del proyecto.
+\item La elaboración de casos de uso.
+\item El diseño de pruebas funcionales y no funcionales.
+\item La validación del sistema por parte de la institución educativa.
+\end{itemize}
+
+\subsection{Alcance del sistema}
+
+La plataforma permitirá administrar procesos académicos, asistencias,
+calificaciones, evidencias, inscripciones, créditos, documentos escolares,
+credenciales digitales y accesos físicos a la institución.
+
+El sistema deberá funcionar principalmente mediante aplicaciones móviles para
+Android e iOS. También deberá disponer de una modalidad de kiosco para los
+dispositivos instalados en los accesos de la institución, tales como teléfonos,
+tabletas, cámaras o equipos conectados a torniquetes.
+
+Toda la información institucional deberá almacenarse en servicios de nube para
+permitir su consulta desde diferentes ubicaciones y mantener la operación del
+sistema las 24 horas del día.
+
+\subsection{Objetivos generales}
+
+\begin{itemize}[leftmargin=*]
+\item Automatizar el registro de asistencia escolar.
+\item Validar la identidad de los usuarios mediante mecanismos biométricos.
+\item Reducir registros de asistencia fraudulentos.
+\item Centralizar la información académica y administrativa.
+\item Facilitar la gestión de alumnos, docentes y grupos.
+\item Proporcionar trazabilidad sobre cambios administrativos sensibles.
+\item Digitalizar las credenciales escolares y los permisos vehiculares.
+\item Permitir el acceso institucional mediante mecanismos alternativos ante fallas.
+\end{itemize}
+
+\subsection{Definiciones y abreviaturas}
+
+\begin{longtable}{p{3.5cm}p{10.5cm}}
+\toprule
+\textbf{Término} & \textbf{Definición}\
+\midrule
+RF & Requisito funcional. Define una operación o comportamiento que debe proporcionar el sistema.\
+RNF & Requisito no funcional. Define una propiedad de calidad, restricción técnica o condición de operación.\
+RN & Regla de negocio. Define una política o condición institucional que debe respetarse.\
+API & Interfaz de programación utilizada para comunicar la aplicación móvil con los servicios del backend.\
+JWT & Token firmado utilizado para autenticar y autorizar solicitudes hacia la API.\
+CRUD & Operaciones de creación, consulta, actualización y eliminación de registros.\
+Embedding biométrico & Representación matemática de las características faciales de una persona.\
+Kiosco & Dispositivo o modalidad destinada exclusivamente al control de acceso físico.\
+Control Escolar & Personal administrativo encargado de expedientes, inscripciones, pagos, calificaciones y créditos.\
+Dirección & Rol administrativo con el mayor nivel de supervisión institucional.\
+Fail-safe & Mecanismo alternativo utilizado para conservar una operación básica ante una falla.\
+\bottomrule
+\end{longtable}
+
+% =========================================================
+\section{Descripción general}
+% =========================================================
+
+\subsection{Perspectiva del producto}
+
+El producto estará compuesto por los siguientes elementos:
+
+\begin{enumerate}[leftmargin=*]
+\item Aplicación móvil para alumnos.
+\item Aplicación móvil para docentes.
+\item Interfaz administrativa para Control Escolar.
+\item Interfaz administrativa para Dirección.
+\item Aplicación o modalidad de kiosco para el acceso físico.
+\item API centralizada para la lógica de negocio.
+\item Base de datos relacional alojada en la nube.
+\item Servicio de almacenamiento de archivos.
+\item Servicio de reconocimiento biométrico.
+\item Servicio de notificaciones.
+\item Servicio de recuperación de cuentas.
+\end{enumerate}
+
+La aplicación podrá utilizar un mismo proyecto multiplataforma y deberá
+presentar diferentes módulos, menús y permisos dependiendo del rol autenticado.
+
+\subsection{Actores del sistema}
+
+Se consideran cinco tipos principales de usuario:
+
+\begin{longtable}{p{3.5cm}p{10.5cm}}
+\toprule
+\textbf{Actor} & \textbf{Responsabilidad principal}\
+\midrule
+Alumno &
+Consultar información académica, registrar asistencia, entregar evidencias,
+realizar trámites, utilizar su credencial digital y consultar sus créditos.\
+
+Maestro &
+Administrar grupos, actividades, asistencias y calificaciones de las materias
+que tenga asignadas.\
+
+Control Escolar &
+Gestionar alumnos, docentes, grupos, inscripciones, pagos, créditos,
+documentación y correcciones administrativas autorizadas.\
+
+Dirección &
+Supervisar integralmente la institución y ejecutar las operaciones de Control
+Escolar con privilegios adicionales de seguimiento y análisis.\
+
+Kiosco de acceso &
+Registrar y validar el acceso físico de los usuarios mediante reconocimiento
+facial, códigos QR, PIN u otros mecanismos autorizados.\
+\bottomrule
+\end{longtable}
+
+\subsection{Restricciones generales}
+
+\begin{itemize}[leftmargin=*]
+\item La aplicación deberá ejecutarse en Android e iOS.
+\item La información institucional deberá permanecer centralizada en la nube.
+\item La aplicación no deberá depender exclusivamente del almacenamiento local.
+\item Las operaciones deberán estar restringidas por roles y permisos.
+\item Los datos biométricos deberán tratarse como información sensible.
+\item El sistema deberá mantener trazabilidad sobre modificaciones administrativas.
+\item La operación estará disponible permanentemente, salvo suspensiones autorizadas.
+\end{itemize}
+
+\subsection{Suposiciones y dependencias}
+
+\begin{itemize}[leftmargin=*]
+\item La institución proporcionará los datos oficiales de alumnos, docentes,
+carreras, grupos, salones y periodos escolares.
+
+```
+\item Los dispositivos móviles utilizados para asistencia biométrica deberán
+contar con sensores compatibles o mecanismos seguros de autenticación local.
+
+\item La geolocalización dependerá de los servicios GPS y permisos del dispositivo.
+
+\item El reconocimiento facial dependerá de la calidad de las cámaras, iluminación,
+conectividad y capacidad de procesamiento disponible.
+
+\item Los servicios de SMS, correo, almacenamiento y notificaciones podrán depender
+de proveedores externos.
+
+\item La institución definirá los calendarios, fechas límite, periodos de evaluación
+y políticas de acceso.
+```
+
+\end{itemize}
+
+% =========================================================
+\section{Requisitos funcionales}
+% =========================================================
+
+\subsection{Módulo de autenticación y control de acceso}
+
+\begin{requisito}{\RF{1.1.1} --- Inicio de sesión unificado}
+El sistema deberá proporcionar una única pantalla de inicio de sesión para todos
+los usuarios.
+
+Después de validar las credenciales, el sistema deberá identificar el rol del
+usuario y mostrar únicamente la interfaz, funcionalidades y datos autorizados
+para dicho rol.
+
+\textbf{Actores:} Alumno, Maestro, Control Escolar, Dirección y Kiosco.
+
+\textbf{Prioridad:} Alta.
+
+\textbf{Criterio de aceptación:} Un usuario autenticado no podrá visualizar ni
+ejecutar funciones correspondientes a otro rol sin autorización explícita.
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.2} --- Identificación de usuarios}
+El sistema deberá aceptar los siguientes identificadores iniciales:
+
+\begin{itemize}[leftmargin=*]
+\item Alumno: matrícula escolar.
+\item Maestro: número de empleado o número de maestro.
+\item Control Escolar: cuenta administrativa asignada por la institución.
+\item Dirección: nombre completo o cuenta administrativa asignada.
+\item Kiosco: identificador institucional único del dispositivo o ubicación.
+\end{itemize}
+
+Los identificadores deberán ser únicos dentro del dominio correspondiente.
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.3} --- Generación de credenciales temporales}
+El sistema deberá permitir la creación de contraseñas temporales conforme a las
+reglas iniciales proporcionadas por la institución:
+
+\begin{itemize}[leftmargin=*]
+\item Dirección: contraseña temporal \texttt{admin}.
+\item Control Escolar: nombre de la escuela seguido de \texttt{1#}.
+\item Maestro: últimos dos dígitos del número de empleado, siglas de la carrera
+y el carácter \texttt{#}.
+\item Alumno: contraseña temporal \texttt{123456789}.
+\item Kiosco: nombre de la escuela seguido de \texttt{12}.
+\end{itemize}
+
+Por razones de seguridad, todas las contraseñas anteriores deberán considerarse
+\textbf{contraseñas temporales de aprovisionamiento} y no contraseñas permanentes.
+
+El sistema deberá exigir su cambio durante el primer inicio de sesión.
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.4} --- Cambio obligatorio de contraseña}
+El sistema deberá obligar a los usuarios personales a cambiar su contraseña
+temporal durante el primer inicio de sesión.
+
+La nueva contraseña deberá cumplir la política de seguridad institucional.
+
+Hasta completar el cambio, el usuario no deberá tener acceso a las demás
+funciones de la plataforma.
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.5} --- Registro de medios de recuperación}
+Durante el primer inicio de sesión, el alumno y el maestro deberán registrar al
+menos uno de los siguientes medios de recuperación:
+
+\begin{itemize}[leftmargin=*]
+\item Dirección de correo electrónico válida.
+\item Número de teléfono celular válido.
+\end{itemize}
+
+El sistema deberá verificar el medio registrado mediante un código de un solo uso.
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.6} --- Recuperación de contraseña}
+El sistema deberá permitir a alumnos y maestros recuperar su cuenta mediante un
+código de verificación enviado al correo electrónico o teléfono previamente
+registrado.
+
+El código deberá:
+
+\begin{itemize}[leftmargin=*]
+\item Tener una vigencia limitada.
+\item Ser de un solo uso.
+\item Invalidarse después de varios intentos fallidos.
+\item No mostrarse en registros visibles para usuarios administrativos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.7} --- Gestión de sesiones}
+El sistema deberá permitir:
+
+\begin{itemize}[leftmargin=*]
+\item Iniciar sesión.
+\item Cerrar sesión.
+\item Revocar sesiones activas.
+\item Invalidar sesiones cuando una cuenta sea suspendida.
+\item Renovar una sesión mediante mecanismos seguros.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.1.8} --- Bloqueo por intentos fallidos}
+El sistema deberá bloquear temporalmente una cuenta cuando se detecte un número
+configurable de intentos de autenticación fallidos.
+
+El sistema deberá registrar el evento y permitir el desbloqueo automático o
+administrativo conforme a las políticas institucionales.
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo del alumno}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.2.1} --- Registro inicial de fotografía}
+Durante el primer inicio de sesión, el alumno deberá capturar una fotografía
+facial desde la aplicación.
+
+La aplicación deberá comprobar, como mínimo:
+
+\begin{itemize}[leftmargin=*]
+\item Presencia de un rostro.
+\item Calidad mínima de iluminación.
+\item Nitidez suficiente.
+\item Ausencia de múltiples rostros.
+\item Correspondencia con una captura en tiempo real.
+\end{itemize}
+
+La captura deberá enviarse al servicio biométrico para generar la plantilla o
+embedding utilizado en el reconocimiento facial.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.2} --- Perfil del alumno}
+El alumno deberá poder consultar su perfil institucional, incluyendo:
+
+\begin{itemize}[leftmargin=*]
+\item Nombre completo.
+\item Matrícula.
+\item Fotografía.
+\item Carrera.
+\item Semestre.
+\item Grupo.
+\item Estatus académico.
+\item Correo y teléfono vinculados.
+\end{itemize}
+
+La modificación de información institucional sensible deberá requerir
+autorización de Control Escolar.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.3} --- Dashboard académico}
+El sistema deberá mostrar al alumno un panel académico con:
+
+\begin{itemize}[leftmargin=*]
+\item Materias del periodo actual.
+\item Calificaciones parciales.
+\item Calificaciones finales.
+\item Promedio del periodo.
+\item Promedio general.
+\item Alertas académicas.
+\item Actividades próximas a vencer.
+\item Resumen de asistencias.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.4} --- Consulta de historial académico}
+El alumno deberá poder consultar su historial académico por:
+
+\begin{itemize}[leftmargin=*]
+\item Semestre.
+\item Periodo escolar.
+\item Materia.
+\item Calificación.
+\item Estatus de acreditación.
+\item Créditos obtenidos.
+\end{itemize}
+
+El historial deberá mostrar únicamente datos oficiales y validados.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.5} --- Registro de asistencia en aula}
+El alumno deberá poder registrar su asistencia desde la aplicación utilizando
+la autenticación biométrica disponible en su dispositivo.
+
+El registro deberá considerar:
+
+\begin{itemize}[leftmargin=*]
+\item Identidad del alumno autenticado.
+\item Materia y grupo.
+\item Fecha y hora.
+\item Ubicación aproximada.
+\item Ventana de tiempo autorizada.
+\item Sesión de clase activa.
+\item Resultado de la validación biométrica local.
+\end{itemize}
+
+La aplicación no deberá extraer ni almacenar directamente la huella digital o
+información interna de Face ID. Solamente deberá utilizar el resultado seguro de
+autenticación proporcionado por Android o iOS.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.6} --- Validación por geolocalización}
+Antes de aceptar una asistencia, el sistema deberá verificar que el dispositivo
+se encuentre dentro de una zona geográfica autorizada para la institución o el
+salón correspondiente.
+
+La tolerancia geográfica deberá ser configurable por la institución.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.7} --- Prevención de asistencias duplicadas}
+El sistema no deberá permitir que un alumno registre más de una asistencia para
+la misma sesión de clase.
+
+Los intentos posteriores deberán registrarse como eventos de auditoría sin
+duplicar la asistencia.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.8} --- Consulta de asistencias}
+El alumno deberá poder consultar sus asistencias clasificadas como:
+
+\begin{itemize}[leftmargin=*]
+\item Presente.
+\item Retardo.
+\item Falta.
+\item Justificada.
+\item Pendiente de validación.
+\item Modificada por el docente.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.9} --- Entrega de evidencias}
+El alumno deberá poder cargar evidencias asociadas a actividades académicas,
+incluyendo documentos PDF e imágenes.
+
+Por cada entrega, el sistema deberá almacenar:
+
+\begin{itemize}[leftmargin=*]
+\item Alumno.
+\item Actividad.
+\item Archivo o archivos entregados.
+\item Fecha y hora exactas.
+\item Estado de entrega.
+\item Indicador de entrega extemporánea.
+\item Calificación.
+\item Retroalimentación del docente.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.10} --- Sustitución de evidencias}
+El alumno podrá sustituir una evidencia únicamente cuando:
+
+\begin{itemize}[leftmargin=*]
+\item La fecha límite no haya vencido.
+\item El docente haya habilitado nuevos intentos.
+\item La actividad permita múltiples entregas.
+\end{itemize}
+
+El sistema deberá conservar el historial de versiones conforme a la política de
+retención institucional.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.11} --- Consulta de actividades}
+El alumno deberá poder consultar las actividades asignadas por sus maestros,
+incluyendo:
+
+\begin{itemize}[leftmargin=*]
+\item Nombre.
+\item Descripción.
+\item Tipo de actividad.
+\item Materia.
+\item Valor porcentual o puntaje.
+\item Fecha de publicación.
+\item Fecha límite.
+\item Archivos adjuntos.
+\item Estado de entrega.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.12} --- Credencial digital}
+El sistema deberá generar una credencial digital equivalente a la credencial
+física institucional.
+
+La credencial deberá incluir:
+
+\begin{itemize}[leftmargin=*]
+\item Fotografía.
+\item Nombre completo.
+\item Matrícula.
+\item Carrera.
+\item Periodo de vigencia.
+\item Código QR o código de barras.
+\item Identificador verificable.
+\item Estatus de vigencia.
+\end{itemize}
+
+El código mostrado deberá poder validarse contra el servidor para detectar
+credenciales vencidas, revocadas o alteradas.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.13} --- Consulta de créditos}
+El alumno deberá poder consultar:
+
+\begin{itemize}[leftmargin=*]
+\item Créditos académicos obtenidos.
+\item Créditos académicos pendientes.
+\item Créditos complementarios obtenidos.
+\item Créditos complementarios pendientes.
+\item Servicio Social.
+\item Prácticas Profesionales.
+\item Actividades complementarias.
+\item Certificaciones de idioma.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.14} --- Mecanismo alternativo de acceso}
+La aplicación deberá generar un mecanismo temporal de acceso cuando el sistema
+principal de reconocimiento de entrada no esté disponible.
+
+El mecanismo podrá consistir en:
+
+\begin{itemize}[leftmargin=*]
+\item Código QR dinámico.
+\item PIN temporal.
+\item Código firmado de un solo uso.
+\end{itemize}
+
+El código deberá tener vigencia limitada y no deberá poder reutilizarse después
+de ser validado.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.15} --- Solicitud de documentos escolares}
+El alumno deberá poder solicitar documentos institucionales, tales como:
+
+\begin{itemize}[leftmargin=*]
+\item Constancia de estudios.
+\item Historial académico.
+\item Constancia de inscripción.
+\item Documentos adicionales configurados por la institución.
+\end{itemize}
+
+El sistema deberá mostrar el estado de la solicitud y notificar al alumno cuando
+el documento esté disponible.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.16} --- Reinscripción y selección de materias}
+El alumno deberá poder iniciar un proceso de reinscripción y seleccionar las
+materias disponibles conforme a:
+
+\begin{itemize}[leftmargin=*]
+\item Carrera.
+\item Semestre.
+\item Plan de estudios.
+\item Materias acreditadas.
+\item Prerrequisitos.
+\item Cupo disponible.
+\item Compatibilidad de horarios.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.17} --- Carga de comprobante de pago}
+Durante la reinscripción, el alumno deberá poder cargar una imagen o documento
+correspondiente al comprobante de pago.
+
+El registro deberá permanecer con estatus \texttt{Pendiente de validación} hasta
+que Control Escolar confirme el pago.
+\end{requisito}
+
+\begin{requisito}{\RF{1.2.18} --- Confirmación presencial de inscripción}
+La inscripción no deberá considerarse definitiva hasta que Control Escolar
+confirme la recepción y validación de los documentos físicos requeridos.
+
+Los estados mínimos del proceso serán:
+
+\begin{itemize}[leftmargin=*]
+\item Borrador.
+\item Pago pendiente.
+\item Pago en revisión.
+\item Documentos físicos pendientes.
+\item Inscripción confirmada.
+\item Rechazada.
+\end{itemize}
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo del maestro}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.3.1} --- Gestión de perfil docente}
+El maestro deberá poder consultar su información institucional y modificar su
+fotografía de perfil.
+
+Los cambios en nombre, número de empleado, carrera o adscripción deberán ser
+autorizados por Control Escolar.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.2} --- Consulta de carga académica}
+El maestro deberá poder consultar:
+
+\begin{itemize}[leftmargin=*]
+\item Materias asignadas.
+\item Grupos asignados.
+\item Salones.
+\item Horarios.
+\item Periodos escolares.
+\item Listas de alumnos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.3} --- Calendario docente}
+El sistema deberá mostrar al maestro un calendario con:
+
+\begin{itemize}[leftmargin=*]
+\item Días de clase.
+\item Horarios.
+\item Actividades.
+\item Evaluaciones.
+\item Fechas límite de captura.
+\item Periodos vacacionales.
+\item Días de suspensión.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.4} --- Creación de actividades}
+El maestro deberá poder crear actividades para sus grupos, incluyendo:
+
+\begin{itemize}[leftmargin=*]
+\item Actividades en clase.
+\item Tareas.
+\item Proyectos.
+\item Exámenes.
+\item Prácticas.
+\item Participaciones.
+\item Otros tipos configurables.
+\end{itemize}
+
+Cada actividad deberá incluir nombre, descripción, materia, grupo, valor,
+fecha de publicación y fecha límite.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.5} --- Configuración de rubros de evaluación}
+El maestro deberá poder definir los rubros de evaluación de cada materia y
+parcial.
+
+La suma de los porcentajes deberá ser igual al 100% antes de cerrar la
+configuración del periodo.
+
+Ejemplo:
+
+\begin{itemize}[leftmargin=*]
+\item Examen: 40%.
+\item Tareas: 30%.
+\item Proyecto: 30%.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.6} --- Captura de calificaciones por actividad}
+El maestro deberá poder registrar una calificación y retroalimentación para cada
+entrega realizada por un alumno.
+
+El sistema deberá validar que la calificación se encuentre dentro de la escala
+permitida por la institución.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.7} --- Cálculo de calificación parcial}
+El sistema deberá calcular automáticamente la calificación parcial con base en:
+
+\begin{itemize}[leftmargin=*]
+\item Calificaciones de actividades.
+\item Valor de cada actividad.
+\item Rubros de evaluación.
+\item Reglas de redondeo.
+\item Actividades anuladas o justificadas.
+\end{itemize}
+
+El maestro deberá revisar y confirmar el resultado antes de su publicación.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.8} --- Captura de calificaciones finales}
+El maestro deberá poder registrar y enviar calificaciones finales durante el
+periodo autorizado por Control Escolar.
+
+Una vez vencido el periodo, la modificación deberá quedar bloqueada para el
+maestro.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.9} --- Gestión de asistencias}
+El maestro deberá poder consultar en tiempo real las asistencias registradas por
+los alumnos en cada sesión de clase.
+
+El panel deberá mostrar:
+
+\begin{itemize}[leftmargin=*]
+\item Alumno.
+\item Hora del registro.
+\item Resultado de validación.
+\item Ubicación validada.
+\item Estatus de asistencia.
+\item Observaciones.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.10} --- Validación manual de asistencia}
+El maestro podrá validar o modificar la asistencia de un alumno cuando exista
+una causa justificada.
+
+La modificación deberá registrar:
+
+\begin{itemize}[leftmargin=*]
+\item Maestro responsable.
+\item Fecha y hora.
+\item Estado anterior.
+\item Estado nuevo.
+\item Motivo.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.11} --- Recordatorios de fechas límite}
+El sistema deberá enviar recordatorios al maestro antes del vencimiento de las
+fechas de captura de calificaciones parciales y finales.
+
+La anticipación de los recordatorios deberá ser configurable.
+\end{requisito}
+
+\begin{requisito}{\RF{1.3.12} --- Consulta de entregas}
+El maestro deberá poder consultar, descargar y revisar las evidencias entregadas
+por los alumnos de sus grupos.
+
+El maestro no deberá poder consultar archivos de grupos o materias que no tenga
+asignados.
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo de Control Escolar}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.4.1} --- Gestión de alumnos}
+Control Escolar deberá poder crear, consultar, actualizar, suspender y reactivar
+registros de alumnos.
+
+La eliminación física de expedientes deberá estar restringida. Preferentemente,
+el sistema deberá utilizar baja lógica para conservar la trazabilidad.
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.2} --- Gestión de maestros}
+Control Escolar deberá poder registrar y administrar:
+
+\begin{itemize}[leftmargin=*]
+\item Datos del maestro.
+\item Número de empleado.
+\item Carrera o departamento.
+\item Materias asignadas.
+\item Grupos.
+\item Horarios.
+\item Estatus laboral dentro del sistema.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.3} --- Importación masiva}
+Control Escolar deberá poder importar alumnos y maestros mediante archivos
+estructurados, como CSV o Excel.
+
+Antes de guardar la información, el sistema deberá:
+
+\begin{itemize}[leftmargin=*]
+\item Validar columnas obligatorias.
+\item Detectar registros duplicados.
+\item Identificar datos inválidos.
+\item Mostrar un resumen de errores.
+\item Solicitar confirmación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.4} --- Gestión de grupos y asignaciones}
+Control Escolar deberá poder:
+
+\begin{itemize}[leftmargin=*]
+\item Crear grupos.
+\item Asignar alumnos.
+\item Asignar maestros.
+\item Asignar materias.
+\item Asignar salones.
+\item Configurar horarios.
+\item Definir periodos escolares.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.5} --- Validación de pagos}
+Control Escolar deberá poder consultar los comprobantes cargados por los alumnos
+y clasificarlos como:
+
+\begin{itemize}[leftmargin=*]
+\item Pendiente.
+\item Aprobado.
+\item Rechazado.
+\item Requiere aclaración.
+\end{itemize}
+
+Cuando se rechace un comprobante, deberá registrarse el motivo.
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.6} --- Confirmación de inscripción}
+Control Escolar deberá poder confirmar la inscripción cuando:
+
+\begin{itemize}[leftmargin=*]
+\item El pago esté validado.
+\item Los documentos físicos hayan sido entregados.
+\item La selección de materias sea válida.
+\item No existan bloqueos administrativos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.7} --- Corrección extemporánea de calificaciones}
+Control Escolar deberá poder modificar una calificación después de la fecha
+límite únicamente cuando cuente con el permiso correspondiente.
+
+La operación deberá exigir:
+
+\begin{itemize}[leftmargin=*]
+\item Selección del alumno.
+\item Materia.
+\item Periodo.
+\item Calificación anterior.
+\item Calificación nueva.
+\item Motivo obligatorio.
+\item Confirmación de la operación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.8} --- Asignación de créditos complementarios}
+Control Escolar deberá poder registrar créditos y avances relacionados con:
+
+\begin{itemize}[leftmargin=*]
+\item Servicio Social.
+\item Prácticas Profesionales.
+\item Idioma inglés.
+\item Actividades culturales.
+\item Actividades deportivas.
+\item Certificaciones.
+\item Otros créditos definidos por la institución.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.9} --- Gestión de documentos escolares}
+Control Escolar deberá poder revisar, aprobar, rechazar y emitir las solicitudes
+de documentos realizadas por los alumnos.
+
+Cada cambio de estado deberá notificarse al solicitante.
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.10} --- Gestión de calendarios y periodos}
+Control Escolar deberá poder configurar:
+
+\begin{itemize}[leftmargin=*]
+\item Periodos escolares.
+\item Fechas de inicio y fin.
+\item Periodos de evaluación.
+\item Fechas límite de calificaciones.
+\item Fechas de reinscripción.
+\item Días festivos.
+\item Suspensiones.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.4.11} --- Suspensión de cuentas}
+Control Escolar deberá poder suspender temporalmente una cuenta por causas
+administrativas.
+
+La suspensión deberá incluir:
+
+\begin{itemize}[leftmargin=*]
+\item Motivo.
+\item Fecha de inicio.
+\item Fecha de finalización opcional.
+\item Usuario responsable.
+\item Alcance de la suspensión.
+\end{itemize}
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo de Dirección}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.5.1} --- Funciones administrativas heredadas}
+Dirección deberá disponer de las funciones asignadas a Control Escolar, sujetas
+a una política de autorización de mayor nivel.
+
+Todas las operaciones deberán identificar claramente al usuario que las ejecutó.
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.2} --- Seguimiento integral de alumnos}
+Dirección deberá poder consultar el expediente integral de un alumno,
+incluyendo:
+
+\begin{itemize}[leftmargin=*]
+\item Historial académico.
+\item Asistencias.
+\item Calificaciones.
+\item Créditos.
+\item Trámites.
+\item Incidencias.
+\item Estatus de inscripción.
+\item Riesgos académicos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.3} --- Seguimiento de maestros}
+Dirección deberá poder consultar indicadores e incidencias relacionadas con los
+maestros, tales como:
+
+\begin{itemize}[leftmargin=*]
+\item Grupos asignados.
+\item Cumplimiento de captura de calificaciones.
+\item Registro de asistencias.
+\item Actividades creadas.
+\item Incidencias administrativas.
+\item Observaciones institucionales.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.4} --- Seguimiento de grupos}
+Dirección deberá poder analizar el desempeño de cada grupo mediante indicadores
+como:
+
+\begin{itemize}[leftmargin=*]
+\item Promedio general.
+\item Índice de aprobación.
+\item Índice de reprobación.
+\item Asistencia promedio.
+\item Alumnos en riesgo.
+\item Materias con mayor reprobación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.5} --- Panel de indicadores}
+El sistema deberá proporcionar a Dirección un panel con indicadores académicos,
+administrativos y de acceso físico.
+
+Los indicadores deberán poder filtrarse por periodo, carrera, semestre, grupo,
+materia y maestro.
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.6} --- Generación de reportes}
+Dirección deberá poder generar reportes en formatos configurables, incluyendo
+PDF y hojas de cálculo.
+
+Los reportes podrán incluir:
+
+\begin{itemize}[leftmargin=*]
+\item Asistencias.
+\item Calificaciones.
+\item Rendimiento académico.
+\item Alumnos en riesgo.
+\item Incidencias.
+\item Accesos físicos.
+\item Créditos.
+\item Inscripciones.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.5.7} --- Suspensión general del servicio}
+Dirección deberá poder activar una suspensión programada de acceso a la
+plataforma durante periodos vacacionales, días festivos o contingencias.
+
+La suspensión deberá permitir definir su alcance:
+
+\begin{itemize}[leftmargin=*]
+\item Solo alumnos.
+\item Alumnos y maestros.
+\item Acceso físico.
+\item Operaciones académicas específicas.
+\item Plataforma completa.
+\end{itemize}
+
+Las funciones administrativas críticas y de emergencia deberán permanecer
+disponibles para los usuarios autorizados.
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo de kiosco y acceso físico}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.6.1} --- Autenticación del dispositivo de acceso}
+Cada dispositivo utilizado en la entrada deberá autenticarse mediante una cuenta
+o credencial técnica única.
+
+No deberá utilizarse una misma credencial compartida para todos los dispositivos
+en producción.
+
+La cuenta deberá estar asociada con:
+
+\begin{itemize}[leftmargin=*]
+\item Institución.
+\item Puerta o acceso.
+\item Dispositivo.
+\item Estado.
+\item Fecha de activación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.2} --- Escaneo facial continuo}
+El kiosco deberá mantener activa la cámara durante su horario de operación y
+detectar rostros presentes frente al dispositivo.
+
+El sistema deberá evitar enviar solicitudes repetidas del mismo rostro dentro de
+un intervalo configurable.
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.3} --- Verificación de presencia real}
+El sistema de acceso deberá utilizar mecanismos de detección de vida o
+\textit{liveness detection} para reducir intentos de acceso mediante:
+
+\begin{itemize}[leftmargin=*]
+\item Fotografías impresas.
+\item Fotografías mostradas en pantallas.
+\item Videos pregrabados.
+\item Máscaras u otros medios de suplantación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.4} --- Reconocimiento de identidad}
+Cuando se detecte un rostro válido, el kiosco deberá enviar al servicio
+biométrico la información necesaria para compararlo con las plantillas
+registradas.
+
+El sistema deberá devolver:
+
+\begin{itemize}[leftmargin=*]
+\item Identidad encontrada o no encontrada.
+\item Nivel de confianza.
+\item Estatus del usuario.
+\item Vigencia de la credencial.
+\item Decisión de acceso.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.5} --- Decisión de acceso}
+Cuando la identidad sea válida y el usuario tenga autorización, el kiosco deberá
+mostrar:
+
+\begin{center}
+\textbf{ACCESO PERMITIDO}
+\end{center}
+
+La pantalla podrá mostrar temporalmente:
+
+\begin{itemize}[leftmargin=*]
+\item Fotografía.
+\item Nombre.
+\item Matrícula o número de empleado.
+\item Tipo de usuario.
+\end{itemize}
+
+Cuando la identidad no sea válida, deberá mostrar:
+
+\begin{center}
+\textbf{ACCESO DENEGADO}
+\end{center}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.6} --- Activación del mecanismo físico}
+Cuando el acceso sea autorizado, el sistema deberá enviar la señal correspondiente
+al torniquete, puerta o mecanismo de apertura integrado.
+
+La apertura deberá tener una duración limitada y deberá registrarse en la bitácora.
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.7} --- Registro de entradas y salidas}
+El sistema deberá registrar cada intento de acceso con:
+
+\begin{itemize}[leftmargin=*]
+\item Usuario identificado, cuando corresponda.
+\item Fecha y hora.
+\item Puerta o torniquete.
+\item Dispositivo.
+\item Tipo de evento: entrada o salida.
+\item Método utilizado.
+\item Resultado.
+\item Motivo de rechazo, cuando corresponda.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.8} --- Validación de QR o PIN alternativo}
+El kiosco deberá poder validar los códigos QR dinámicos o PIN temporales
+generados por la aplicación.
+
+El código deberá rechazarse cuando:
+
+\begin{itemize}[leftmargin=*]
+\item Haya expirado.
+\item Ya haya sido utilizado.
+\item No corresponda al usuario.
+\item Haya sido revocado.
+\item No esté firmado correctamente.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.9} --- Operación ante pérdida de conectividad}
+Cuando exista una pérdida temporal de conectividad, el dispositivo deberá mostrar
+claramente que se encuentra en modo degradado.
+
+La institución podrá habilitar una lista cifrada y limitada de credenciales
+temporales para continuar operaciones básicas.
+
+Todos los eventos generados sin conexión deberán sincronizarse cuando se
+restablezca el servicio.
+\end{requisito}
+
+\begin{requisito}{\RF{1.6.10} --- Restricción funcional del kiosco}
+El usuario de kiosco solamente deberá acceder a las funciones necesarias para:
+
+\begin{itemize}[leftmargin=*]
+\item Detectar y validar rostros.
+\item Validar códigos alternativos.
+\item Mostrar el resultado de acceso.
+\item Registrar entradas y salidas.
+\item Consultar el estado de conectividad.
+\item Ejecutar diagnósticos autorizados.
+\end{itemize}
+
+El kiosco no deberá poder consultar calificaciones, expedientes, pagos,
+documentos ni información académica adicional.
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo de credenciales y control vehicular}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.7.1} --- Habilitación manual de pase vehicular}
+Control Escolar deberá poder habilitar manualmente un pase vehicular para un
+alumno, maestro o usuario administrativo.
+
+El pase no deberá generarse automáticamente.
+\end{requisito}
+
+\begin{requisito}{\RF{1.7.2} --- Registro de vehículo}
+El sistema deberá permitir registrar:
+
+\begin{itemize}[leftmargin=*]
+\item Tipo de vehículo.
+\item Marca.
+\item Modelo.
+\item Color.
+\item Placas.
+\item Nombre del propietario o responsable.
+\item Matrícula o número de empleado.
+\item Fotografía del usuario.
+\item Fecha de inicio de vigencia.
+\item Fecha de vencimiento.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.7.3} --- Tipos de vehículo}
+El sistema deberá admitir, como mínimo, los siguientes tipos:
+
+\begin{itemize}[leftmargin=*]
+\item Motocicleta.
+\item Automóvil.
+\item Camioneta.
+\end{itemize}
+
+La institución podrá configurar tipos adicionales.
+\end{requisito}
+
+\begin{requisito}{\RF{1.7.4} --- Credencial vehicular digital}
+Cuando el pase se encuentre autorizado, la aplicación deberá mostrar una
+credencial vehicular digital con:
+
+\begin{itemize}[leftmargin=*]
+\item Fotografía del usuario.
+\item Nombre.
+\item Matrícula o número de empleado.
+\item Placas.
+\item Tipo de vehículo.
+\item Vigencia.
+\item Código QR verificable.
+\item Estatus del permiso.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.7.5} --- Revocación de pase vehicular}
+Control Escolar y Dirección deberán poder suspender o revocar un permiso
+vehicular.
+
+La revocación deberá surtir efecto inmediatamente en los dispositivos conectados.
+\end{requisito}
+
+\begin{requisito}{\RF{1.7.6} --- Registro de acceso vehicular}
+El sistema deberá registrar la entrada y salida de vehículos, incluyendo:
+
+\begin{itemize}[leftmargin=*]
+\item Usuario.
+\item Vehículo.
+\item Placas.
+\item Fecha y hora de entrada.
+\item Fecha y hora de salida.
+\item Punto de acceso.
+\item Resultado de la validación.
+\end{itemize}
+\end{requisito}
+
+% ---------------------------------------------------------
+\subsection{Módulo de notificaciones}
+% ---------------------------------------------------------
+
+\begin{requisito}{\RF{1.8.1} --- Notificaciones internas}
+El sistema deberá proporcionar un centro de notificaciones dentro de la
+aplicación.
+
+Las notificaciones deberán indicar su estado como leída o no leída.
+\end{requisito}
+
+\begin{requisito}{\RF{1.8.2} --- Notificaciones push}
+El sistema deberá enviar notificaciones push para eventos relevantes, como:
+
+\begin{itemize}[leftmargin=*]
+\item Actividad asignada.
+\item Fecha de entrega próxima.
+\item Calificación publicada.
+\item Cambio de asistencia.
+\item Documento disponible.
+\item Pago rechazado.
+\item Inscripción confirmada.
+\item Fecha límite de captura docente.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RF{1.8.3} --- Comunicados institucionales}
+Control Escolar y Dirección deberán poder enviar comunicados a:
+
+\begin{itemize}[leftmargin=*]
+\item Toda la institución.
+\item Una carrera.
+\item Un semestre.
+\item Un grupo.
+\item Maestros.
+\item Alumnos.
+\item Usuarios específicos.
+\end{itemize}
+\end{requisito}
+
+% =========================================================
+\section{Reglas de negocio}
+% =========================================================
+
+\begin{requisito}{\RN{01} --- Contraseñas iniciales}
+Las contraseñas generadas durante el alta de usuarios serán temporales y deberán
+cambiarse durante el primer inicio de sesión.
+\end{requisito}
+
+\begin{requisito}{\RN{02} --- Restricción de calificaciones}
+Los maestros solamente podrán modificar calificaciones dentro del periodo
+habilitado por Control Escolar.
+\end{requisito}
+
+\begin{requisito}{\RN{03} --- Modificación extemporánea}
+Toda modificación de calificaciones fuera del periodo deberá requerir un motivo
+y generar un registro de auditoría.
+\end{requisito}
+
+\begin{requisito}{\RN{04} --- Confirmación de inscripción}
+La carga de un comprobante de pago no confirmará automáticamente una inscripción.
+\end{requisito}
+
+\begin{requisito}{\RN{05} --- Documentación física}
+La inscripción se confirmará únicamente después de que Control Escolar valide
+los documentos físicos requeridos.
+\end{requisito}
+
+\begin{requisito}{\RN{06} --- Asistencia válida}
+Una asistencia será válida cuando se encuentre dentro del horario, ubicación y
+sesión de clase autorizados.
+\end{requisito}
+
+\begin{requisito}{\RN{07} --- Asistencia única}
+Un alumno no podrá registrar más de una asistencia para la misma sesión.
+\end{requisito}
+
+\begin{requisito}{\RN{08} --- Credencial digital}
+Una credencial digital vencida, suspendida o revocada no permitirá el acceso.
+\end{requisito}
+
+\begin{requisito}{\RN{09} --- Pase vehicular}
+El pase vehicular solamente será válido durante el periodo autorizado por
+Control Escolar.
+\end{requisito}
+
+\begin{requisito}{\RN{10} --- Privilegios de Dirección}
+Dirección podrá ejecutar funciones de Control Escolar y consultar información
+institucional consolidada.
+\end{requisito}
+
+\begin{requisito}{\RN{11} --- Acceso mínimo del kiosco}
+El kiosco tendrá permisos mínimos y no podrá acceder a información académica.
+\end{requisito}
+
+\begin{requisito}{\RN{12} --- Suspensión programada}
+Las suspensiones generales deberán registrar responsable, motivo, fecha de inicio,
+fecha de finalización y alcance.
+\end{requisito}
+
+% =========================================================
+\section{Requisitos no funcionales}
+% =========================================================
+
+\subsection{Arquitectura y tecnología}
+
+\begin{requisito}{\RNF{2.1.1} --- Aplicación multiplataforma}
+La aplicación móvil deberá ser compatible con Android e iOS.
+
+Se propone utilizar React Native con Expo, siempre que las funciones biométricas,
+de cámara y geolocalización requeridas sean compatibles con la estrategia de
+compilación seleccionada.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.2} --- Backend}
+El backend deberá implementar una API desacoplada de la aplicación cliente.
+
+Se propone utilizar Python y FastAPI por su compatibilidad con operaciones
+asíncronas, servicios biométricos y documentación automática de API.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.3} --- Base de datos}
+La información transaccional deberá almacenarse en una base de datos relacional.
+
+Se propone PostgreSQL por sus capacidades de integridad, concurrencia,
+transacciones, extensibilidad y auditoría.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.4} --- Arquitectura modular}
+El backend deberá separar, al menos, los siguientes dominios:
+
+\begin{itemize}[leftmargin=*]
+\item Identidad y acceso.
+\item Gestión académica.
+\item Asistencias.
+\item Evaluaciones.
+\item Archivos.
+\item Biometría.
+\item Inscripciones.
+\item Credenciales.
+\item Control vehicular.
+\item Notificaciones.
+\item Auditoría.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.5} --- Almacenamiento de archivos}
+Las fotografías, comprobantes, evidencias y documentos no deberán almacenarse
+directamente como archivos binarios dentro de las tablas transaccionales.
+
+Deberán almacenarse en un servicio de objetos, como:
+
+\begin{itemize}[leftmargin=*]
+\item Amazon S3.
+\item Cloudinary.
+\item Firebase Storage.
+\item Servicio compatible con S3.
+\end{itemize}
+
+La base de datos almacenará la referencia, metadatos, propietario, tipo,
+integridad y permisos del archivo.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.6} --- Servicios en la nube}
+El backend, la base de datos y el almacenamiento deberán desplegarse en
+infraestructura de nube.
+
+No deberán depender de un único equipo local de la institución para operar.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.1.7} --- Separación de ambientes}
+El proyecto deberá contar, como mínimo, con ambientes separados para:
+
+\begin{itemize}[leftmargin=*]
+\item Desarrollo.
+\item Pruebas.
+\item Producción.
+\end{itemize}
+
+Los datos reales de producción no deberán utilizarse directamente en desarrollo.
+\end{requisito}
+
+\subsection{Disponibilidad y continuidad}
+
+\begin{requisito}{\RNF{2.2.1} --- Disponibilidad}
+El sistema deberá estar disponible las 24 horas del día, los 7 días de la semana,
+excepto durante:
+
+\begin{itemize}[leftmargin=*]
+\item Mantenimientos programados.
+\item Suspensiones institucionales autorizadas.
+\item Eventos de fuerza mayor.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.2.2} --- Nivel objetivo de disponibilidad}
+La disponibilidad mensual objetivo del backend deberá ser igual o superior al
+99.5%, excluyendo mantenimientos programados previamente comunicados.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.2.3} --- Respaldo de base de datos}
+La base de datos deberá contar con respaldos automáticos.
+
+Como mínimo, deberán implementarse:
+
+\begin{itemize}[leftmargin=*]
+\item Respaldo diario.
+\item Retención configurable.
+\item Cifrado de respaldos.
+\item Pruebas periódicas de restauración.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.2.4} --- Recuperación ante desastres}
+La arquitectura deberá definir:
+
+\begin{itemize}[leftmargin=*]
+\item Objetivo de tiempo de recuperación, RTO.
+\item Objetivo de punto de recuperación, RPO.
+\item Procedimiento de restauración.
+\item Responsables.
+\item Pruebas periódicas.
+\end{itemize}
+
+Como valor inicial, se propone un RTO máximo de cuatro horas y un RPO máximo de
+veinticuatro horas, sujetos a aprobación institucional.
+\end{requisito}
+
+\subsection{Seguridad}
+
+\begin{requisito}{\RNF{2.3.1} --- Control de acceso basado en roles}
+El sistema deberá implementar control de acceso basado en roles y permisos.
+
+Cada endpoint de la API deberá verificar tanto la autenticación como la
+autorización del usuario.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.2} --- Autenticación mediante tokens}
+La comunicación autenticada entre las aplicaciones y la API deberá utilizar
+tokens firmados con expiración limitada.
+
+Los tokens de renovación deberán almacenarse y transmitirse mediante mecanismos
+seguros.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.3} --- Protección de contraseñas}
+Las contraseñas no deberán almacenarse en texto plano.
+
+Deberán protegerse mediante un algoritmo de derivación de claves adecuado, como
+Argon2id o bcrypt, con parámetros de costo configurables.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.4} --- Política de contraseñas}
+Las contraseñas permanentes deberán cumplir, como mínimo:
+
+\begin{itemize}[leftmargin=*]
+\item Longitud mínima configurable.
+\item Combinación de diferentes tipos de caracteres.
+\item Rechazo de contraseñas comunes.
+\item Prohibición de reutilizar contraseñas recientes.
+\item Cambio obligatorio cuando exista una recuperación de cuenta.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.5} --- Cifrado en tránsito}
+Toda comunicación entre clientes, API, base de datos y almacenamiento deberá
+protegerse mediante TLS.
+
+No se permitirán credenciales ni datos biométricos transmitidos por conexiones
+sin cifrado.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.6} --- Cifrado en reposo}
+Los datos sensibles, respaldos y objetos almacenados deberán permanecer cifrados
+en reposo mediante las capacidades del proveedor de infraestructura.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.7} --- Datos biométricos}
+El sistema deberá minimizar el almacenamiento de imágenes faciales.
+
+Para el reconocimiento, deberá almacenar preferentemente plantillas biométricas
+o embeddings cifrados, junto con los metadatos indispensables.
+
+La fotografía institucional utilizada para la credencial deberá tratarse
+separadamente de la plantilla biométrica.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.8} --- Consentimiento biométrico}
+Antes del registro biométrico, el sistema deberá presentar un aviso de privacidad
+y obtener el consentimiento correspondiente conforme a las políticas y
+obligaciones legales aplicables.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.9} --- Prevención de suplantación}
+El reconocimiento facial deberá incluir controles de detección de vida y
+protección contra ataques de presentación.
+
+El sistema deberá registrar intentos sospechosos sin exponer información
+biométrica al usuario final.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.10} --- Protección de archivos}
+Los archivos privados no deberán exponerse mediante direcciones públicas
+permanentes.
+
+El acceso deberá realizarse mediante permisos, URLs firmadas y tiempos de
+expiración.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.11} --- Validación de archivos}
+Antes de aceptar un archivo, el sistema deberá validar:
+
+\begin{itemize}[leftmargin=*]
+\item Tipo MIME.
+\item Extensión.
+\item Tamaño.
+\item Integridad.
+\item Asociación con el usuario.
+\item Posibles contenidos maliciosos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.12} --- Gestión de secretos}
+Las claves de API, contraseñas de base de datos, certificados y secretos no
+deberán almacenarse directamente en el código fuente.
+
+Deberán administrarse mediante variables de entorno o un servicio especializado
+de gestión de secretos.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.3.13} --- Limitación de solicitudes}
+La API deberá aplicar límites de solicitudes para reducir ataques de fuerza
+bruta, abuso de endpoints y saturación del sistema.
+\end{requisito}
+
+\subsection{Auditoría y trazabilidad}
+
+\begin{requisito}{\RNF{2.4.1} --- Bitácora de auditoría}
+El sistema deberá mantener una bitácora de operaciones sensibles.
+
+La bitácora deberá registrar:
+
+\begin{itemize}[leftmargin=*]
+\item Usuario responsable.
+\item Acción.
+\item Recurso afectado.
+\item Fecha y hora.
+\item Dirección IP.
+\item Dispositivo o cliente.
+\item Valor anterior.
+\item Valor nuevo.
+\item Motivo, cuando sea obligatorio.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.4.2} --- Auditoría de calificaciones}
+Toda modificación extemporánea de calificaciones deberá generar automáticamente
+un registro de auditoría desde la base de datos o desde una capa transaccional
+protegida.
+
+La aplicación no deberá permitir al usuario administrativo eliminar o alterar
+dicho registro.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.4.3} --- Integridad de auditoría}
+Los registros de auditoría deberán ser de solo inserción para los usuarios de la
+aplicación.
+
+Las correcciones sobre una bitácora deberán realizarse mediante nuevos eventos,
+sin sobrescribir los anteriores.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.4.4} --- Sincronización horaria}
+Todos los servidores y dispositivos de acceso deberán mantener sus relojes
+sincronizados con una fuente horaria confiable.
+
+Las fechas deberán almacenarse en UTC y presentarse de acuerdo con la zona
+horaria institucional.
+\end{requisito}
+
+\subsection{Rendimiento}
+
+\begin{requisito}{\RNF{2.5.1} --- Tiempo de reconocimiento facial}
+Bajo condiciones normales de conectividad y carga, el sistema de acceso deberá
+emitir una decisión en un tiempo máximo de 2.5 segundos desde la captura válida
+del rostro.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.5.2} --- Tiempo de respuesta de consultas}
+Las operaciones comunes de consulta deberán responder, en el percentil 95, en
+menos de dos segundos, sin considerar la descarga de archivos pesados.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.5.3} --- Operaciones pesadas}
+La carga y procesamiento de archivos pesados deberá ejecutarse de manera
+asíncrona y no deberá bloquear la navegación principal de la aplicación.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.5.4} --- Procesamiento en segundo plano}
+Las siguientes operaciones podrán ejecutarse mediante colas de trabajo:
+
+\begin{itemize}[leftmargin=*]
+\item Procesamiento de fotografías.
+\item Generación de embeddings.
+\item Envío de correos.
+\item Envío de notificaciones.
+\item Generación de reportes.
+\item Procesamiento de archivos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.5.5} --- Concurrencia}
+La infraestructura deberá dimensionarse con base en:
+
+\begin{itemize}[leftmargin=*]
+\item Número total de alumnos.
+\item Número de maestros.
+\item Accesos simultáneos.
+\item Cantidad de torniquetes.
+\item Horarios de máxima entrada.
+\item Periodos de publicación de calificaciones.
+\end{itemize}
+
+Las pruebas de carga deberán utilizar escenarios reales proporcionados por la
+institución.
+\end{requisito}
+
+\subsection{Usabilidad y accesibilidad}
+
+\begin{requisito}{\RNF{2.6.1} --- Diseño responsivo}
+La interfaz deberá adaptarse a diferentes tamaños de pantalla, incluyendo
+teléfonos pequeños, teléfonos de gama media y tabletas.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.6.2} --- Legibilidad}
+El sistema deberá utilizar tipografías, tamaños, espacios y contrastes que
+permitan una lectura clara.
+
+Las pantallas de acceso deberán mantener visibilidad suficiente bajo iluminación
+exterior.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.6.3} --- Retroalimentación inmediata}
+La aplicación deberá informar claramente al usuario cuando una operación:
+
+\begin{itemize}[leftmargin=*]
+\item Está en proceso.
+\item Fue completada.
+\item Falló.
+\item Requiere corrección.
+\item Está pendiente de validación.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.6.4} --- Mensajes de error}
+Los mensajes de error deberán ser comprensibles y no deberán revelar detalles
+internos, consultas SQL, rutas del servidor, tokens ni información sensible.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.6.5} --- Accesibilidad}
+La interfaz deberá considerar:
+
+\begin{itemize}[leftmargin=*]
+\item Compatibilidad con escalado de texto.
+\item Etiquetas para lectores de pantalla.
+\item Controles táctiles con tamaño suficiente.
+\item Contraste adecuado.
+\item Navegación consistente.
+\item Información no dependiente exclusivamente del color.
+\end{itemize}
+\end{requisito}
+
+\subsection{Compatibilidad}
+
+\begin{requisito}{\RNF{2.7.1} --- Versiones de Android}
+La aplicación deberá establecer una versión mínima de Android conforme a las
+capacidades biométricas y de seguridad requeridas.
+
+La matriz de compatibilidad deberá definirse antes de iniciar las pruebas de
+aceptación.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.7.2} --- Versiones de iOS}
+La aplicación deberá establecer una versión mínima de iOS conforme a las
+capacidades de Face ID, Touch ID, cámara, notificaciones y almacenamiento seguro.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.7.3} --- Dispositivos de kiosco}
+El módulo de kiosco deberá poder ejecutarse en dispositivos autorizados con
+cámara compatible y conexión segura.
+
+Cuando se integre con torniquetes, deberá definirse un protocolo de comunicación
+documentado.
+\end{requisito}
+
+\subsection{Mantenibilidad y calidad}
+
+\begin{requisito}{\RNF{2.8.1} --- Código modular}
+El código deberá organizarse en módulos con responsabilidades claramente
+definidas y bajo acoplamiento.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.8.2} --- Documentación de API}
+La API deberá contar con documentación actualizada de:
+
+\begin{itemize}[leftmargin=*]
+\item Endpoints.
+\item Métodos.
+\item Parámetros.
+\item Respuestas.
+\item Códigos de error.
+\item Permisos requeridos.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.8.3} --- Pruebas automatizadas}
+El proyecto deberá contar con pruebas automatizadas para:
+
+\begin{itemize}[leftmargin=*]
+\item Autenticación.
+\item Autorización.
+\item Cálculo de calificaciones.
+\item Registro de asistencia.
+\item Inscripción.
+\item Auditoría.
+\item Validación de credenciales.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.8.4} --- Integración continua}
+El repositorio deberá utilizar un proceso de integración continua que ejecute
+validaciones de código y pruebas antes de desplegar una nueva versión.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.8.5} --- Observabilidad}
+El sistema deberá disponer de:
+
+\begin{itemize}[leftmargin=*]
+\item Registros estructurados.
+\item Métricas.
+\item Monitoreo de disponibilidad.
+\item Alertas.
+\item Seguimiento de errores.
+\item Identificadores de correlación.
+\end{itemize}
+\end{requisito}
+
+\subsection{Privacidad y retención}
+
+\begin{requisito}{\RNF{2.9.1} --- Minimización de datos}
+El sistema deberá recopilar únicamente la información necesaria para las
+funciones académicas, administrativas y de seguridad autorizadas.
+\end{requisito}
+
+\begin{requisito}{\RNF{2.9.2} --- Retención de información}
+La institución deberá definir periodos de retención para:
+
+\begin{itemize}[leftmargin=*]
+\item Expedientes académicos.
+\item Evidencias.
+\item Fotografías.
+\item Plantillas biométricas.
+\item Registros de acceso.
+\item Auditorías.
+\item Comprobantes de pago.
+\end{itemize}
+\end{requisito}
+
+\begin{requisito}{\RNF{2.9.3} --- Baja de datos biométricos}
+Cuando un usuario deje de pertenecer a la institución, el sistema deberá permitir
+revocar su acceso y eliminar o anonimizar sus datos biométricos conforme a la
+política legal de retención aplicable.
+\end{requisito}
+
+% =========================================================
+\section{Matriz de permisos}
+% =========================================================
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{longtable}{
+p{5.2cm}
+>{\centering\arraybackslash}p{1.4cm}
+>{\centering\arraybackslash}p{1.4cm}
+>{\centering\arraybackslash}p{1.8cm}
+>{\centering\arraybackslash}p{1.5cm}
+>{\centering\arraybackslash}p{1.4cm}
+}
+\toprule
+\textbf{Función} &
+\textbf{Alumno} &
+\textbf{Maestro} &
+\textbf{Control Escolar} &
+\textbf{Dirección} &
+\textbf{Kiosco}\
+\midrule
+\endfirsthead
+
+\toprule
+\textbf{Función} &
+\textbf{Alumno} &
+\textbf{Maestro} &
+\textbf{Control Escolar} &
+\textbf{Dirección} &
+\textbf{Kiosco}\
+\midrule
+\endhead
+
+Consultar calificaciones propias & Sí & No & Sí & Sí & No\
+Registrar asistencia propia & Sí & No & No & No & No\
+Validar asistencia de un grupo & No & Sí & Sí & Sí & No\
+Crear actividades & No & Sí & No & No & No\
+Calificar actividades & No & Sí & No & No & No\
+Modificar calificaciones en periodo & No & Sí & Supervisión & Supervisión & No\
+Modificar calificaciones extemporáneas & No & No & Sí & Sí & No\
+Gestionar alumnos & No & No & Sí & Sí & No\
+Gestionar maestros & No & No & Sí & Sí & No\
+Validar pagos & No & No & Sí & Sí & No\
+Confirmar inscripciones & No & No & Sí & Sí & No\
+Asignar créditos & No & No & Sí & Sí & No\
+Consultar indicadores globales & No & No & Limitado & Sí & No\
+Autorizar pase vehicular & No & No & Sí & Sí & No\
+Mostrar credencial vehicular propia & Sí & Sí & Sí & Sí & No\
+Validar acceso físico & No & No & No & No & Sí\
+Suspender acceso general & No & No & Según permiso & Sí & No\
+Consultar auditorías & No & No & Limitado & Sí & No\
+
+\bottomrule
+\end{longtable}
+
+% =========================================================
+\section{Estados principales del sistema}
+% =========================================================
+
+\subsection{Estados de una cuenta}
+
+\begin{itemize}[leftmargin=*]
+\item Pendiente de activación.
+\item Contraseña temporal.
+\item Activa.
+\item Bloqueada temporalmente.
+\item Suspendida.
+\item Inactiva.
+\item Revocada.
+\end{itemize}
+
+\subsection{Estados de una inscripción}
+
+\begin{itemize}[leftmargin=*]
+\item Borrador.
+\item Pago pendiente.
+\item Pago en revisión.
+\item Pago rechazado.
+\item Documentos físicos pendientes.
+\item En validación.
+\item Confirmada.
+\item Rechazada.
+\item Cancelada.
+\end{itemize}
+
+\subsection{Estados de una entrega}
+
+\begin{itemize}[leftmargin=*]
+\item No entregada.
+\item Entregada a tiempo.
+\item Entregada fuera de tiempo.
+\item En revisión.
+\item Calificada.
+\item Requiere corrección.
+\item Anulada.
+\end{itemize}
+
+\subsection{Estados de una asistencia}
+
+\begin{itemize}[leftmargin=*]
+\item Pendiente.
+\item Presente.
+\item Retardo.
+\item Falta.
+\item Justificada.
+\item Rechazada por ubicación.
+\item Rechazada por horario.
+\item Modificada manualmente.
+\end{itemize}
+
+\subsection{Estados de una credencial vehicular}
+
+\begin{itemize}[leftmargin=*]
+\item Pendiente.
+\item Activa.
+\item Suspendida.
+\item Vencida.
+\item Revocada.
+\end{itemize}
+
+% =========================================================
+\section{Criterios generales de aceptación}
+% =========================================================
+
+El sistema podrá considerarse funcionalmente aceptable cuando se compruebe que:
+
+\begin{enumerate}[leftmargin=*]
+\item Cada usuario accede únicamente a las funciones autorizadas por su rol.
+
+```
+\item Las contraseñas temporales deben cambiarse durante el primer acceso.
+
+\item Los alumnos pueden consultar su información académica y entregar
+evidencias.
+
+\item Los maestros pueden gestionar actividades, asistencias y calificaciones
+de sus grupos.
+
+\item Control Escolar puede administrar alumnos, pagos, inscripciones,
+documentos y créditos.
+
+\item Dirección puede supervisar la información institucional y generar
+reportes consolidados.
+
+\item El kiosco puede identificar usuarios y emitir una decisión de acceso.
+
+\item Cada modificación sensible genera un registro de auditoría.
+
+\item Los archivos se almacenan fuera de la base de datos transaccional.
+
+\item Las comunicaciones están cifradas.
+
+\item Las contraseñas no se almacenan en texto plano.
+
+\item Los datos biométricos se encuentran protegidos y sujetos a políticas de
+privacidad.
+
+\item El acceso alternativo mediante QR o PIN funciona durante las
+contingencias autorizadas.
+
+\item Los permisos vehiculares pueden ser emitidos, consultados y revocados.
+
+\item El sistema satisface los tiempos de respuesta establecidos para las
+operaciones críticas.
+```
+
+\end{enumerate}
+
+% =========================================================
+\section{Riesgos arquitectónicos identificados}
+% =========================================================
+
+\begin{longtable}{p{4.5cm}p{5cm}p{4.5cm}}
+\toprule
+\textbf{Riesgo} & \textbf{Impacto} & \textbf{Tratamiento recomendado}\
+\midrule
+
+Contraseñas iniciales predecibles &
+Acceso no autorizado a cuentas nuevas &
+Forzar cambio inmediato, limitar vigencia y notificar la activación.\
+
+Uso de una sola cuenta para todos los kioscos &
+Imposibilidad de identificar el dispositivo comprometido &
+Asignar una credencial técnica diferente a cada equipo.\
+
+Falsificación de ubicación &
+Registro fraudulento de asistencia &
+Combinar geolocalización, sesión de clase, biometría y controles antifraude.\
+
+Uso de fotografías para engañar al reconocimiento &
+Acceso físico no autorizado &
+Implementar detección de vida y umbrales de confianza.\
+
+Pérdida de conectividad &
+Interrupción del acceso a la institución &
+Implementar modo degradado controlado y sincronización posterior.\
+
+Almacenamiento excesivo de fotografías &
+Riesgo de privacidad y aumento de costos &
+Minimizar imágenes, utilizar plantillas biométricas y políticas de retención.\
+
+Carga masiva incorrecta &
+Corrupción o duplicación de datos &
+Validar previamente, generar reporte de errores y usar transacciones.\
+
+Modificaciones administrativas sin trazabilidad &
+Pérdida de integridad académica &
+Utilizar auditoría inmutable y motivos obligatorios.\
+
+Sobrecarga durante horarios de entrada &
+Filas y denegaciones por tiempo de espera &
+Realizar pruebas de carga y escalar horizontalmente el servicio biométrico.\
+
+Dependencia de un proveedor de nube &
+Dificultad de migración o interrupción del servicio &
+Utilizar estándares abiertos, respaldos exportables y almacenamiento compatible.\
+
+\bottomrule
+\end{longtable}
+
+% =========================================================
+\section{Priorización inicial}
+% =========================================================
+
+\subsection{Prioridad crítica}
+
+\begin{itemize}[leftmargin=*]
+\item Autenticación y autorización.
+\item Gestión de alumnos y maestros.
+\item Registro y validación de asistencia.
+\item Reconocimiento facial de acceso.
+\item Gestión de materias, grupos y horarios.
+\item Captura de calificaciones.
+\item Auditoría de modificaciones.
+\item Infraestructura en la nube.
+\end{itemize}
+
+\subsection{Prioridad alta}
+
+\begin{itemize}[leftmargin=*]
+\item Evidencias académicas.
+\item Recuperación de cuentas.
+\item Credencial digital.
+\item Inscripciones y pagos.
+\item Créditos complementarios.
+\item Notificaciones.
+\item Códigos alternativos de acceso.
+\end{itemize}
+
+\subsection{Prioridad media}
+
+\begin{itemize}[leftmargin=*]
+\item Reportes avanzados.
+\item Indicadores de riesgo académico.
+\item Control vehicular.
+\item Analítica institucional.
+\item Exportaciones personalizadas.
+\end{itemize}
+
+% =========================================================
+\section{Recomendación de arquitectura lógica}
+% =========================================================
+
+Se recomienda iniciar con un \textbf{monolito modular} desplegado en la nube,
+en lugar de implementar microservicios desde la primera versión.
+
+El monolito modular permitirá:
+
+\begin{itemize}[leftmargin=*]
+\item Reducir complejidad operativa.
+\item Mantener transacciones consistentes.
+\item Facilitar las pruebas.
+\item Acelerar el desarrollo inicial.
+\item Separar los dominios mediante módulos internos.
+\item Extraer servicios independientes en el futuro cuando exista una necesidad
+comprobada.
+\end{itemize}
+
+El servicio biométrico y los procesos en segundo plano podrán separarse desde el
+inicio debido a sus necesidades específicas de cómputo y escalabilidad.
+
+Una distribución lógica inicial sería:
+
+\begin{enumerate}[leftmargin=*]
+\item Aplicación móvil React Native.
+\item Interfaz de kiosco.
+\item API FastAPI.
+\item Módulo de autenticación.
+\item Módulo académico.
+\item Módulo de asistencias.
+\item Módulo de inscripciones.
+\item Módulo de credenciales.
+\item Servicio biométrico.
+\item Cola de trabajos asíncronos.
+\item PostgreSQL.
+\item Almacenamiento de objetos.
+\item Servicio de monitoreo y auditoría.
+\end{enumerate}
+
+% =========================================================
+\section{Conclusión}
+% =========================================================
+
+La plataforma propuesta centraliza los procesos de control académico, asistencia
+biométrica, evaluación, inscripción, credenciales y acceso físico de la
+institución.
+
+Los requisitos establecidos en este documento deberán utilizarse como base para:
+
+\begin{itemize}[leftmargin=*]
+\item Elaborar diagramas de casos de uso.
+\item Diseñar el modelo de datos.
+\item Definir la arquitectura de componentes.
+\item Construir historias de usuario.
+\item Estimar el proyecto.
+\item Diseñar prototipos de interfaz.
+\item Preparar pruebas de aceptación.
+\item Definir un plan de implementación por fases.
+\end{itemize}
+
+Cualquier modificación posterior deberá registrarse mediante control de
+versiones y mantener la trazabilidad entre el requisito, su diseño, su
+implementación y sus pruebas.
+
+\end{document}

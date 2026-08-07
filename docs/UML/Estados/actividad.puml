@@ -1,0 +1,18 @@
+@startuml
+title Estado de una Actividad
+
+[*] --> Creada
+
+Creada --> Publicada
+
+Publicada --> EnEntrega
+
+EnEntrega --> Calificando
+
+Calificando --> Calificada
+
+Calificada --> Cerrada
+
+Cerrada --> [*]
+
+@enduml

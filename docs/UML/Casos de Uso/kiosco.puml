@@ -1,0 +1,25 @@
+@startuml
+
+actor Kiosco
+actor ESP32
+
+rectangle Entrada{
+
+usecase "Capturar Rostro"
+usecase "Comparar Embedding"
+usecase "Autorizar Acceso"
+usecase "Abrir Torniquete"
+usecase "Registrar Acceso"
+
+}
+
+Kiosco --> (Capturar Rostro)
+Kiosco --> (Comparar Embedding)
+Kiosco --> (Autorizar Acceso)
+
+(Autorizar Acceso) --> (Abrir Torniquete)
+(Abrir Torniquete) --> ESP32
+
+(Autorizar Acceso) --> (Registrar Acceso)
+
+@enduml

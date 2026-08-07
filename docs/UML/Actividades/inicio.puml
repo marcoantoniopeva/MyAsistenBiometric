@@ -1,0 +1,38 @@
+@startuml
+title DA-01 Inicio de Sesión
+
+start
+
+:Ingresar usuario;
+
+:Ingresar contraseña;
+
+:Enviar credenciales;
+
+if (¿Credenciales válidas?) then (Sí)
+
+    :Generar JWT;
+
+    :Obtener rol;
+
+    if (Alumno) then
+        :Dashboard Alumno;
+    elseif (Maestro)
+        :Dashboard Maestro;
+    elseif (Control Escolar)
+        :Panel Control Escolar;
+    elseif (Dirección)
+        :Panel Dirección;
+    else
+        :Modo Kiosco;
+    endif
+
+else
+
+:Mostrar error;
+
+endif
+
+stop
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+title DA-03 Registro de Asistencia
+
+start
+
+:Abrir módulo de asistencia;
+
+:Autenticar FaceID/Huella;
+
+if (¿Autenticación correcta?) then (Sí)
+
+:Obtener ubicación GPS;
+
+if (¿Dentro de la escuela?) then (Sí)
+
+:Enviar asistencia;
+
+:Guardar asistencia;
+
+:Mostrar confirmación;
+
+else
+
+:Mostrar ubicación inválida;
+
+endif
+
+else
+
+:Acceso denegado;
+
+endif
+
+stop
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title DA-05 Entrega de Evidencias
+
+start
+
+:Seleccionar actividad;
+
+:Seleccionar archivo;
+
+:Subir PDF/Imagen;
+
+:Guardar en Cloudinary;
+
+:Guardar URL;
+
+:Registrar fecha y hora;
+
+:Mostrar entrega exitosa;
+
+stop
+
+@enduml

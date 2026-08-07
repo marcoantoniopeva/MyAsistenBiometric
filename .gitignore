@@ -1,0 +1,34 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+*.pyc
+
+# React Native
+frontend/node_modules/
+frontend/.expo/
+
+# Variables de entorno
+backend/.env
+frontend/.env
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Cobertura y cachés
+.pytest_cache/
+.coverage
+htmlcov/
+
+
+
+backend/venv/
+frontend/node_modules/
+.DS_Store

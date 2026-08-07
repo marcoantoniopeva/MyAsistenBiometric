@@ -1,0 +1,176 @@
+@startuml
+title Arquitectura de Clases del Backend
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+package "Controllers" {
+
+class AuthController
+class AlumnoController
+class MaestroController
+class AsistenciaController
+class ActividadController
+class CalificacionController
+class ReinscripcionController
+class ReporteController
+
+}
+
+package "Services" {
+
+class AuthService
+class AlumnoService
+class MaestroService
+class AsistenciaService
+class ActividadService
+class CalificacionService
+class BiometriaService
+class CloudinaryService
+class QRService
+class ReporteService
+
+}
+
+package "Repositories" {
+
+class UsuarioRepository
+class AlumnoRepository
+class MateriaRepository
+class ActividadRepository
+class CalificacionRepository
+class AsistenciaRepository
+
+}
+
+package "Models" {
+
+class Usuario
+class Alumno
+class Maestro
+class Materia
+class Actividad
+class Calificacion
+class Asistencia
+class Reinscripcion
+class Vehiculo
+class CredencialDigital
+
+}
+
+package "Security" {
+
+class JWTManager
+class PasswordManager
+
+}
+
+package "Infrastructure" {
+
+class SupabaseClient
+class CloudinaryClient
+class FaceRecognitionEngine
+class ESP32Client
+
+}
+
+'==========================
+' Controllers -> Services
+'==========================
+
+AuthController --> AuthService
+
+AlumnoController --> AlumnoService
+
+MaestroController --> MaestroService
+
+AsistenciaController --> AsistenciaService
+
+ActividadController --> ActividadService
+
+CalificacionController --> CalificacionService
+
+ReinscripcionController --> AlumnoService
+
+ReporteController --> ReporteService
+
+'==========================
+' Services -> Repositories
+'==========================
+
+AlumnoService --> AlumnoRepository
+
+MaestroService --> UsuarioRepository
+
+ActividadService --> ActividadRepository
+
+CalificacionService --> CalificacionRepository
+
+AsistenciaService --> AsistenciaRepository
+
+AuthService --> UsuarioRepository
+
+ReporteService --> AlumnoRepository
+
+ReporteService --> CalificacionRepository
+
+'==========================
+' Repositories -> Models
+'==========================
+
+UsuarioRepository --> Usuario
+
+AlumnoRepository --> Alumno
+
+MateriaRepository --> Materia
+
+ActividadRepository --> Actividad
+
+CalificacionRepository --> Calificacion
+
+AsistenciaRepository --> Asistencia
+
+'==========================
+' Services -> Models
+'==========================
+
+AlumnoService --> Reinscripcion
+
+AlumnoService --> CredencialDigital
+
+AlumnoService --> Vehiculo
+
+AsistenciaService --> Asistencia
+
+ActividadService --> Actividad
+
+CalificacionService --> Calificacion
+
+'==========================
+' Servicios Especiales
+'==========================
+
+AuthService --> JWTManager
+
+AuthService --> PasswordManager
+
+AlumnoService --> CloudinaryService
+
+AlumnoService --> QRService
+
+AsistenciaService --> BiometriaService
+
+BiometriaService --> FaceRecognitionEngine
+
+CloudinaryService --> CloudinaryClient
+
+AlumnoService --> SupabaseClient
+
+AuthService --> SupabaseClient
+
+ReporteService --> SupabaseClient
+
+BiometriaService --> ESP32Client
+
+@enduml

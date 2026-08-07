@@ -1,0 +1,26 @@
+@startuml
+title SD-01 Inicio de Sesión
+
+actor Usuario
+participant "React Native" as App
+participant "FastAPI" as API
+database "Supabase Auth" as Auth
+database PostgreSQL
+
+Usuario -> App : Ingresa usuario y contraseña
+
+App -> API : POST /login
+
+API -> Auth : Validar credenciales
+
+Auth --> API : Token JWT
+
+API -> PostgreSQL : Obtener perfil
+
+PostgreSQL --> API : Datos del usuario
+
+API --> App : JWT + Perfil
+
+App --> Usuario : Dashboard correspondiente
+
+@enduml

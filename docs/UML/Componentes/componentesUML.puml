@@ -1,0 +1,133 @@
+@startuml
+title Diagrama de Componentes - Plataforma de Asistencia Biométrica Escolar
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+package "Clientes" {
+
+component "App Alumno\nReact Native + Expo" as Alumno
+
+component "App Maestro\nReact Native + Expo" as Maestro
+
+component "Panel Control Escolar\nReact Native + Expo" as Control
+
+component "Panel Dirección\nReact Native + Expo" as Direccion
+
+component "Modo Kiosco\nReact Native + Expo" as Kiosco
+
+}
+
+package "Backend" {
+
+component "API REST\nFastAPI" as API
+
+component "Auth Service" as Auth
+
+component "User Service" as User
+
+component "Academic Service" as Academic
+
+component "Attendance Service" as Attendance
+
+component "Evaluation Service" as Evaluation
+
+component "Enrollment Service" as Enrollment
+
+component "Vehicle Service" as Vehicle
+
+component "Notification Service" as Notification
+
+component "Biometric Service" as Biometric
+
+component "QR Service" as QR
+
+component "Storage Service" as Storage
+
+}
+
+package "Persistencia" {
+
+database "Supabase Auth" as SupaAuth
+
+database "PostgreSQL" as DB
+
+folder "Cloudinary" as Cloudinary
+
+}
+
+package "Servicios Externos" {
+
+component "Face Recognition\n(OpenCV + dlib)" as Face
+
+component "OpenStreetMap API" as Maps
+
+component "Servicio SMTP\nCorreo" as Email
+
+component "Servicio SMS" as SMS
+
+}
+
+package "Hardware" {
+
+component "ESP32" as ESP32
+
+component "Relé" as Relay
+
+component "Torniquete" as Gate
+
+component "Cámara" as Camera
+
+component "Lector Biométrico\n(Huella/FaceID)" as Sensor
+
+}
+
+Alumno --> API
+Maestro --> API
+Control --> API
+Direccion --> API
+Kiosco --> API
+
+API --> Auth
+API --> User
+API --> Academic
+API --> Attendance
+API --> Evaluation
+API --> Enrollment
+API --> Vehicle
+API --> Notification
+API --> Biometric
+API --> QR
+API --> Storage
+
+Auth --> SupaAuth
+
+User --> DB
+Academic --> DB
+Attendance --> DB
+Evaluation --> DB
+Enrollment --> DB
+Vehicle --> DB
+QR --> DB
+
+Storage --> Cloudinary
+
+Biometric --> Face
+
+Attendance --> Maps
+
+Notification --> Email
+Notification --> SMS
+
+Kiosco --> Camera
+Alumno --> Sensor
+
+Biometric --> ESP32
+
+ESP32 --> Relay
+
+Relay --> Gate
+
+@enduml

@@ -1,0 +1,357 @@
+@startuml
+title Sistema de Asistencia Biométrica Escolar - Diagrama de Clases
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "Usuarios" {
+
+abstract class Usuario{
++UUID id
++String nombre
++String apellidoPaterno
++String apellidoMaterno
++String correo
++String telefono
++String passwordHash
++Boolean activo
+
++login()
++logout()
++cambiarPassword()
+}
+
+class Alumno{
++String matricula
++Integer semestre
++Double promedio
+
++registrarAsistencia()
++subirEvidencia()
++consultarCalificaciones()
++consultarCreditos()
++descargarCredencial()
+}
+
+class Maestro{
++String numeroEmpleado
+
++crearActividad()
++editarActividad()
++calificarAlumno()
++validarAsistencia()
++cerrarParcial()
+}
+
+class ControlEscolar{
++registrarAlumno()
++registrarMaestro()
++validarPago()
++modificarCalificacion()
++asignarCreditos()
+}
+
+class Director{
++consultarReportes()
++consultarIndicadores()
++suspenderSistema()
+}
+
+class Kiosco{
++capturarRostro()
++enviarImagen()
++mostrarResultado()
+}
+
+Usuario <|-- Alumno
+Usuario <|-- Maestro
+Usuario <|-- ControlEscolar
+Usuario <|-- Director
+Usuario <|-- Kiosco
+
+}
+
+package "Académico" {
+
+class Carrera{
++UUID id
++String nombre
++String siglas
+}
+
+class PlanEstudios{
++UUID id
++String nombre
+}
+
+class Materia{
++UUID id
++String clave
++String nombre
++Integer creditos
+}
+
+class Grupo{
++UUID id
++String nombre
+}
+
+class Curso{
++UUID id
++abrirCurso()
++cerrarCurso()
+}
+
+class Horario{
++String dia
++Time horaInicio
++Time horaFin
+}
+
+class RubroEvaluacion{
++UUID id
++String nombre
++Double porcentaje
+}
+
+class Actividad{
++UUID id
++String titulo
++Date fechaEntrega
++Double valor
+}
+
+class Entrega{
++UUID id
++DateTime fechaEntrega
++String archivo
+}
+
+class Calificacion{
++UUID id
++Double calificacion
++String observaciones
+}
+
+Carrera "1" -- "*" PlanEstudios
+PlanEstudios "1" -- "*" Materia
+Materia "1" -- "*" Curso
+Curso "1" -- "*" Horario
+Curso "1" -- "*" Grupo
+Curso "1" -- "*" RubroEvaluacion
+RubroEvaluacion "1" -- "*" Actividad
+Actividad "1" -- "*" Entrega
+Entrega "1" -- "1" Calificacion
+
+}
+
+package "Asistencia Biométrica" {
+
+class SesionClase{
++UUID id
++Date fecha
++abrirSesion()
++cerrarSesion()
+}
+
+class Asistencia{
++UUID id
++Date fecha
++Time hora
++registrar()
++validar()
+}
+
+class Biometria{
++UUID id
++String embedding
+}
+
+class FaceRecognitionService{
++generarEmbedding()
++compararEmbeddings()
++identificarPersona()
+}
+
+class Geolocalizacion{
++Double latitud
++Double longitud
++validarUbicacion()
+}
+
+class QRTemporal{
++String codigo
++DateTime expiracion
+}
+
+Curso "1" -- "*" SesionClase
+SesionClase "1" -- "*" Asistencia
+Alumno "1" -- "*" Asistencia
+Alumno "1" -- "1" Biometria
+Asistencia --> Geolocalizacion
+FaceRecognitionService --> Biometria
+Alumno "1" -- "*" QRTemporal
+
+}
+
+package "Administración" {
+
+class Pago{
++UUID id
++Double monto
++Boolean validado
+}
+
+class Documento{
++UUID id
++String nombre
++String url
+}
+
+class Solicitud{
++UUID id
++String tipo
++String estado
+}
+
+class CreditoComplementario{
++UUID id
++String tipo
++Integer horas
+}
+
+Alumno "1" -- "*" Pago
+Alumno "1" -- "*" Documento
+Alumno "1" -- "*" Solicitud
+Alumno "1" -- "*" CreditoComplementario
+
+}
+
+package "Credenciales" {
+
+class CredencialDigital{
++UUID id
++String codigoQR
++Date vigencia
+}
+
+class Vehiculo{
++UUID id
++String placas
++String tipo
++String modelo
+}
+
+class PaseVehicular{
++UUID id
++Date fechaInicio
++Date fechaFin
++Boolean activo
+}
+
+Usuario "1" -- "1" CredencialDigital
+Usuario "1" -- "*" Vehiculo
+Vehiculo "1" -- "1" PaseVehicular
+
+}
+
+package "Seguridad" {
+
+class AuthService{
++login()
++logout()
++refreshToken()
+}
+
+class JWTService{
++generarJWT()
++validarJWT()
+}
+
+class PasswordService{
++hashPassword()
++verifyPassword()
+}
+
+class NotificationService{
++enviarCorreo()
++enviarSMS()
++enviarPush()
+}
+
+class CloudinaryService{
++subirImagen()
++subirPDF()
++eliminarArchivo()
+}
+
+class LocationService{
++validarUbicacion()
+}
+
+class Auditoria{
++UUID id
++String accion
++DateTime fecha
++String ip
+}
+
+AuthService --> JWTService
+AuthService --> PasswordService
+LocationService --> Geolocalizacion
+NotificationService --> Usuario
+
+}
+
+package "Hardware" {
+
+class ESP32{
++abrirTorniquete()
++cerrarTorniquete()
+}
+
+class Torniquete{
++UUID id
++String ubicacion
+}
+
+class Camara{
++capturar()
+}
+
+Kiosco --> Camara
+Kiosco --> FaceRecognitionService
+FaceRecognitionService --> ESP32
+ESP32 --> Torniquete
+
+}
+
+package "Persistencia" {
+
+interface IUserRepository
+interface IAlumnoRepository
+interface IMaestroRepository
+interface ICursoRepository
+interface IAsistenciaRepository
+interface ICalificacionRepository
+
+class PostgreSQL
+class Supabase
+
+IUserRepository --> PostgreSQL
+IAlumnoRepository --> PostgreSQL
+IMaestroRepository --> PostgreSQL
+ICursoRepository --> PostgreSQL
+IAsistenciaRepository --> PostgreSQL
+ICalificacionRepository --> PostgreSQL
+
+PostgreSQL --> Supabase
+
+}
+
+Carrera "1" -- "*" Alumno
+Curso "*" -- "*" Alumno
+Maestro "1" -- "*" Curso
+
+@enduml

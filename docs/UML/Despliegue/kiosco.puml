@@ -1,0 +1,46 @@
+@startuml
+title Despliegue del Sistema de Acceso Biométrico
+
+skinparam shadowing false
+
+node "Tablet Kiosco"{
+
+artifact "React Native"
+
+artifact "Expo Camera"
+
+}
+
+node "Servidor FastAPI"{
+
+artifact "API"
+
+artifact "OpenCV"
+
+artifact "face_recognition"
+
+}
+
+database PostgreSQL
+
+node ESP32{
+
+artifact "Firmware"
+
+}
+
+node Relay
+
+node Torniquete
+
+"Tablet Kiosco" --> API
+
+API --> PostgreSQL
+
+API --> ESP32
+
+ESP32 --> Relay
+
+Relay --> Torniquete
+
+@enduml

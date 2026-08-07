@@ -1,0 +1,206 @@
+@startuml
+title Diagrama General de Actividades - Plataforma de Asistencia Biométrica Escolar
+
+skinparam shadowing false
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    DiamondBackgroundColor White
+    DiamondBorderColor Black
+    ArrowColor Black
+}
+
+start
+
+:Ingresar usuario y contraseña;
+
+:Enviar credenciales a FastAPI;
+
+if (¿Credenciales válidas?) then (Sí)
+
+    :Generar Token JWT;
+    :Obtener Rol del Usuario;
+
+    if (Rol = Alumno?) then (Sí)
+
+        if (¿Primer inicio?) then (Sí)
+            :Cambiar contraseña;
+            :Registrar correo/teléfono;
+            :Capturar Selfie;
+            :Generar Embedding Facial;
+            :Guardar información;
+        endif
+
+        :Mostrar Dashboard Alumno;
+
+        fork
+
+            :Consultar calificaciones;
+            :Consultar kardex;
+            :Consultar créditos;
+
+        fork again
+
+            :Registrar asistencia;
+            :Validar FaceID/Huella;
+            :Validar ubicación GPS;
+            :Guardar asistencia;
+
+        fork again
+
+            :Subir evidencias;
+            :Guardar archivo en Cloudinary;
+            :Registrar fecha y hora;
+
+        fork again
+
+            :Descargar credencial digital;
+
+        fork again
+
+            :Solicitar constancias;
+
+        fork again
+
+            :Reinscripción;
+            :Seleccionar materias;
+            :Subir comprobante;
+            :Esperar validación;
+
+        fork again
+
+            :Generar QR/PIN temporal;
+
+        end fork
+
+    elseif (Rol = Maestro?) then (Sí)
+
+        :Mostrar Panel Maestro;
+
+        fork
+
+            :Consultar horarios;
+            :Consultar grupos;
+            :Consultar materias;
+
+        fork again
+
+            :Crear actividades;
+            :Asignar porcentajes;
+            :Asignar fechas;
+
+        fork again
+
+            :Capturar calificaciones;
+
+        fork again
+
+            :Validar asistencias;
+
+        fork again
+
+            :Consultar calendario;
+
+        end fork
+
+    elseif (Rol = Control Escolar?) then (Sí)
+
+        :Mostrar Panel Control Escolar;
+
+        fork
+
+            :Registrar alumnos;
+
+        fork again
+
+            :Registrar maestros;
+
+        fork again
+
+            :Validar pagos;
+
+        fork again
+
+            :Modificar calificaciones;
+
+        fork again
+
+            :Asignar créditos;
+
+        fork again
+
+            :Emitir constancias;
+
+        fork again
+
+            :Habilitar pase vehicular;
+
+        end fork
+
+    elseif (Rol = Dirección?) then (Sí)
+
+        :Mostrar Panel Dirección;
+
+        fork
+
+            :Consultar reportes generales;
+
+        fork again
+
+            :Dar seguimiento a alumnos;
+
+        fork again
+
+            :Dar seguimiento a maestros;
+
+        fork again
+
+            :Consultar indicadores;
+
+        fork again
+
+            :Suspender plataforma;
+
+        end fork
+
+    else
+
+        :Modo Kiosco;
+
+        :Capturar rostro;
+
+        :Enviar imagen al servidor;
+
+        :Generar embedding;
+
+        :Comparar con base biométrica;
+
+        if (¿Coincidencia?) then (Sí)
+
+            :Registrar acceso;
+
+            :Enviar señal HTTP al ESP32;
+
+            :Abrir torniquete;
+
+            :Mostrar ACCESO PERMITIDO;
+
+        else
+
+            :Mostrar ACCESO DENEGADO;
+
+        endif
+
+    endif
+
+    :Cerrar sesión;
+
+else
+
+    :Mostrar mensaje de credenciales incorrectas;
+
+endif
+
+stop
+
+@enduml

@@ -1,0 +1,68 @@
+@startuml
+title Arquitectura por Paquetes
+
+skinparam packageStyle rectangle
+
+package "Presentación"{
+
+package Login
+
+package Alumno
+
+package Maestro
+
+package Dirección
+
+package ControlEscolar
+
+package Kiosco
+
+}
+
+package "Lógica de Negocio"{
+
+package Usuarios
+
+package Académico
+
+package Asistencia
+
+package Biometría
+
+package Reinscripción
+
+package Vehículos
+
+package Reportes
+
+}
+
+package "Persistencia"{
+
+package PostgreSQL
+
+package Supabase
+
+package Cloudinary
+
+}
+
+package "Infraestructura"{
+
+package ESP32
+
+package OpenCV
+
+package SMTP
+
+package OpenStreetMap
+
+}
+
+Presentación --> "Lógica de Negocio"
+
+"Lógica de Negocio" --> Persistencia
+
+"Lógica de Negocio" --> Infraestructura
+
+@enduml

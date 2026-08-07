@@ -1,0 +1,35 @@
+@startuml
+
+left to right direction
+
+actor "Control Escolar"
+
+rectangle Administracion{
+
+usecase "Registrar Alumno"
+usecase "Registrar Maestro"
+usecase "Registrar Carrera"
+usecase "Registrar Materia"
+usecase "Registrar Grupo"
+usecase "Registrar Horarios"
+usecase "Validar Pago"
+usecase "Modificar Calificación"
+usecase "Asignar Créditos"
+usecase "Emitir Constancias"
+usecase "Habilitar Pase Vehicular"
+
+}
+
+"Control Escolar" --> (Registrar Alumno)
+"Control Escolar" --> (Registrar Maestro)
+"Control Escolar" --> (Registrar Carrera)
+"Control Escolar" --> (Registrar Materia)
+"Control Escolar" --> (Registrar Grupo)
+"Control Escolar" --> (Registrar Horarios)
+"Control Escolar" --> (Validar Pago)
+"Control Escolar" --> (Modificar Calificación)
+"Control Escolar" --> (Asignar Créditos)
+"Control Escolar" --> (Emitir Constancias)
+"Control Escolar" --> (Habilitar Pase Vehicular)
+
+@enduml

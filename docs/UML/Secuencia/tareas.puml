@@ -1,0 +1,28 @@
+@startuml
+title SD-06 Entrega de Evidencias
+
+actor Alumno
+
+participant App
+
+participant Cloudinary
+
+participant FastAPI
+
+database PostgreSQL
+
+Alumno -> App : Seleccionar archivo
+
+App -> Cloudinary : Subir PDF
+
+Cloudinary --> App : URL
+
+App -> FastAPI : Registrar entrega
+
+FastAPI -> PostgreSQL : Guardar URL
+
+PostgreSQL --> FastAPI : OK
+
+FastAPI --> App : Evidencia registrada
+
+@enduml

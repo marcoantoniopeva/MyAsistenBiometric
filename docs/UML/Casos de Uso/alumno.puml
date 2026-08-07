@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+
+actor Alumno
+
+rectangle Alumno{
+
+usecase "Iniciar Sesión"
+usecase "Cambiar Contraseña"
+usecase "Registrar Selfie"
+usecase "Recuperar Contraseña"
+usecase "Registrar Asistencia"
+usecase "Consultar Calificaciones"
+usecase "Consultar Kardex"
+usecase "Consultar Créditos"
+usecase "Subir Evidencias"
+usecase "Consultar Retroalimentación"
+usecase "Descargar Credencial"
+usecase "Generar QR Emergencia"
+usecase "Solicitar Constancias"
+usecase "Realizar Reinscripción"
+usecase "Subir Comprobante de Pago"
+
+}
+
+Alumno --> (Iniciar Sesión)
+Alumno --> (Cambiar Contraseña)
+Alumno --> (Registrar Selfie)
+Alumno --> (Recuperar Contraseña)
+Alumno --> (Registrar Asistencia)
+Alumno --> (Consultar Calificaciones)
+Alumno --> (Consultar Kardex)
+Alumno --> (Consultar Créditos)
+Alumno --> (Subir Evidencias)
+Alumno --> (Consultar Retroalimentación)
+Alumno --> (Descargar Credencial)
+Alumno --> (Generar QR Emergencia)
+Alumno --> (Solicitar Constancias)
+Alumno --> (Realizar Reinscripción)
+Alumno --> (Subir Comprobante de Pago)
+
+@enduml

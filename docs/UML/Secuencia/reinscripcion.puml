@@ -1,0 +1,30 @@
+@startuml
+title SD-08 Reinscripción
+
+actor Alumno
+
+participant App
+
+participant Cloudinary
+
+participant FastAPI
+
+database PostgreSQL
+
+Alumno -> App : Seleccionar materias
+
+Alumno -> App : Subir comprobante
+
+App -> Cloudinary : Guardar comprobante
+
+Cloudinary --> App : URL
+
+App -> FastAPI : Solicitar reinscripción
+
+FastAPI -> PostgreSQL : Guardar solicitud
+
+PostgreSQL --> FastAPI : Pendiente
+
+FastAPI --> App : Esperando validación
+
+@enduml

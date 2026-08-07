@@ -1,0 +1,69 @@
+@startuml
+title Arquitectura Física Completa del Sistema
+
+skinparam shadowing false
+skinparam linetype ortho
+
+node "Android"{
+artifact "App Expo"
+}
+
+node "iOS"{
+artifact "App Expo"
+}
+
+node "Tablet Kiosco"{
+artifact "Expo Camera"
+}
+
+cloud Internet
+
+node "Servidor FastAPI"{
+
+artifact FastAPI
+
+artifact Uvicorn
+
+artifact JWT
+
+artifact OpenCV
+
+artifact face_recognition
+
+}
+
+cloud "Supabase Cloud"{
+
+database PostgreSQL
+
+database Auth
+
+}
+
+cloud Cloudinary
+
+node ESP32
+
+node Relay
+
+node Torniquete
+
+Android --> Internet
+iOS --> Internet
+"Tablet Kiosco" --> Internet
+
+Internet --> FastAPI
+
+FastAPI --> PostgreSQL
+
+FastAPI --> Auth
+
+FastAPI --> Cloudinary
+
+FastAPI --> ESP32
+
+ESP32 --> Relay
+
+Relay --> Torniquete
+
+@enduml

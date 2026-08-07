@@ -1,0 +1,335 @@
+@startuml
+' Configuración visual del diagrama ER
+hide circle
+skinparam linetype ortho
+skinparam roundcorner 5
+skinparam class {
+    BackgroundColor White
+    ArrowColor #2F75B5
+    BorderColor #17365D
+}
+
+' ==========================================
+' ENTIDADES
+' ==========================================
+
+entity "ROL" {
+  * id : uuid <<PK>>
+  --
+  nombre : string
+  descripcion : string
+}
+
+entity "USUARIO" {
+  * id : uuid <<PK>>
+  --
+  rol_id : uuid <<FK>>
+  nombre : string
+  apellido_paterno : string
+  apellido_materno : string
+  correo : string
+  telefono : string
+  password_hash : string
+  activo : boolean
+}
+
+entity "ALUMNO" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  matricula : string
+  carrera_id : uuid <<FK>>
+  plan_id : uuid <<FK>>
+  semestre : int
+  foto : string
+}
+
+entity "MAESTRO" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  numero_empleado : string
+  especialidad : string
+}
+
+entity "CONTROL_ESCOLAR" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+}
+
+entity "DIRECCION" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+}
+
+entity "KIOSCO" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  ubicacion : string
+}
+
+entity "CARRERA" {
+  * id : uuid <<PK>>
+  --
+  nombre : string
+  siglas : string
+}
+
+entity "PLAN_ESTUDIOS" {
+  * id : uuid <<PK>>
+  --
+  carrera_id : uuid <<FK>>
+  nombre : string
+}
+
+entity "MATERIA" {
+  * id : uuid <<PK>>
+  --
+  clave : string
+  nombre : string
+  creditos : int
+}
+
+entity "PLAN_MATERIA" {
+  * id : uuid <<PK>>
+  --
+  plan_id : uuid <<FK>>
+  materia_id : uuid <<FK>>
+  semestre : int
+}
+
+entity "GRUPO" {
+  * id : uuid <<PK>>
+  --
+  nombre : string
+  semestre : int
+}
+
+entity "CURSO" {
+  * id : uuid <<PK>>
+  --
+  materia_id : uuid <<FK>>
+  maestro_id : uuid <<FK>>
+  grupo_id : uuid <<FK>>
+}
+
+entity "HORARIO" {
+  * id : uuid <<PK>>
+  --
+  curso_id : uuid <<FK>>
+  dia : string
+  hora_inicio : time
+  hora_fin : time
+}
+
+entity "INSCRIPCION" {
+  * id : uuid <<PK>>
+  --
+  alumno_id : uuid <<FK>>
+  curso_id : uuid <<FK>>
+}
+
+entity "PERIODO_ESCOLAR" {
+  * id : uuid <<PK>>
+  --
+  nombre : string
+  inicio : date
+  fin : date
+}
+
+entity "RUBRO_EVALUACION" {
+  * id : uuid <<PK>>
+  --
+  curso_id : uuid <<FK>>
+  nombre : string
+  porcentaje : decimal
+}
+
+entity "ACTIVIDAD" {
+  * id : uuid <<PK>>
+  --
+  rubro_id : uuid <<FK>>
+  titulo : string
+  fecha_entrega : date
+  valor : decimal
+}
+
+entity "ENTREGA" {
+  * id : uuid <<PK>>
+  --
+  actividad_id : uuid <<FK>>
+  alumno_id : uuid <<FK>>
+  archivo : string
+  fecha : timestamp
+}
+
+entity "CALIFICACION" {
+  * id : uuid <<PK>>
+  --
+  entrega_id : uuid <<FK>>
+  calificacion : decimal
+  observaciones : string
+}
+
+entity "SESION_CLASE" {
+  * id : uuid <<PK>>
+  --
+  curso_id : uuid <<FK>>
+  fecha : date
+}
+
+entity "ASISTENCIA" {
+  * id : uuid <<PK>>
+  --
+  sesion_id : uuid <<FK>>
+  alumno_id : uuid <<FK>>
+  presente : boolean
+  hora : timestamp
+}
+
+entity "BIOMETRIA" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  embedding : string
+}
+
+entity "ACCESO" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  fecha : datetime
+  permitido : boolean
+}
+
+entity "QR_TEMPORAL" {
+  * id : uuid <<PK>>
+  --
+  alumno_id : uuid <<FK>>
+  codigo : string
+  expiracion : datetime
+}
+
+entity "CREDENCIAL_DIGITAL" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  codigo_qr : string
+  vigencia : date
+}
+
+entity "VEHICULO" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  placas : string
+  tipo : string
+}
+
+entity "PASE_VEHICULAR" {
+  * id : uuid <<PK>>
+  --
+  vehiculo_id : uuid <<FK>>
+  inicio : date
+  fin : date
+}
+
+entity "PAGO" {
+  * id : uuid <<PK>>
+  --
+  alumno_id : uuid <<FK>>
+  monto : decimal
+  comprobante : string
+  validado : boolean
+}
+
+entity "SOLICITUD_DOCUMENTO" {
+  * id : uuid <<PK>>
+  --
+  alumno_id : uuid <<FK>>
+  tipo : string
+  estado : string
+}
+
+entity "NOTIFICACION" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  titulo : string
+  mensaje : string
+}
+
+entity "CREDITO_COMPLEMENTARIO" {
+  * id : uuid <<PK>>
+  --
+  alumno_id : uuid <<FK>>
+  tipo : string
+  horas : int
+}
+
+entity "AUDITORIA" {
+  * id : uuid <<PK>>
+  --
+  usuario_id : uuid <<FK>>
+  accion : string
+  fecha : timestamp
+}
+
+' ==========================================
+' RELACIONES
+' ==========================================
+
+ROL ||--o{ USUARIO : "posee"
+
+USUARIO ||--|| ALUMNO : "es"
+USUARIO ||--|| MAESTRO : "es"
+USUARIO ||--|| CONTROL_ESCOLAR : "es"
+USUARIO ||--|| DIRECCION : "es"
+USUARIO ||--|| KIOSCO : "es"
+
+CARRERA ||--o{ PLAN_ESTUDIOS : "contiene"
+PLAN_ESTUDIOS ||--o{ PLAN_MATERIA : "incluye"
+MATERIA ||--o{ PLAN_MATERIA : "pertenece"
+
+CARRERA ||--o{ ALUMNO : "estudia"
+
+MAESTRO ||--o{ CURSO : "imparte"
+GRUPO ||--o{ CURSO : "tiene"
+MATERIA ||--o{ CURSO : "corresponde"
+
+CURSO ||--o{ HORARIO : "programa"
+CURSO ||--o{ INSCRIPCION : "registra"
+ALUMNO ||--o{ INSCRIPCION : "realiza"
+
+CURSO ||--o{ RUBRO_EVALUACION : "define"
+RUBRO_EVALUACION ||--o{ ACTIVIDAD : "contiene"
+ACTIVIDAD ||--o{ ENTREGA : "recibe"
+ALUMNO ||--o{ ENTREGA : "realiza"
+
+ENTREGA ||--|| CALIFICACION : "obtiene"
+
+CURSO ||--o{ SESION_CLASE : "genera"
+SESION_CLASE ||--o{ ASISTENCIA : "registra"
+ALUMNO ||--o{ ASISTENCIA : "posee"
+
+USUARIO ||--|| BIOMETRIA : "registra"
+USUARIO ||--o{ ACCESO : "genera"
+
+ALUMNO ||--o{ QR_TEMPORAL : "genera"
+
+USUARIO ||--|| CREDENCIAL_DIGITAL : "posee"
+
+USUARIO ||--o{ VEHICULO : "registra"
+VEHICULO ||--|| PASE_VEHICULAR : "tiene"
+
+ALUMNO ||--o{ PAGO : "realiza"
+ALUMNO ||--o{ SOLICITUD_DOCUMENTO : "solicita"
+ALUMNO ||--o{ CREDITO_COMPLEMENTARIO : "obtiene"
+
+USUARIO ||--o{ NOTIFICACION : "recibe"
+USUARIO ||--o{ AUDITORIA : "genera"
+
+@enduml

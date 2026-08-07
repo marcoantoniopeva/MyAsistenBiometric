@@ -1,0 +1,96 @@
+@startuml
+title Arquitectura por Capas
+
+skinparam componentStyle rectangle
+
+package "Presentación"{
+
+component "React Native\nAlumno"
+
+component "React Native\nMaestro"
+
+component "React Native\nControl Escolar"
+
+component "React Native\nDirección"
+
+component "React Native\nKiosco"
+
+}
+
+package "API"{
+
+component "FastAPI"
+
+}
+
+package "Servicios"{
+
+component "Autenticación"
+
+component "Usuarios"
+
+component "Académico"
+
+component "Asistencia"
+
+component "Biometría"
+
+component "Calificaciones"
+
+component "Reinscripción"
+
+component "Vehículos"
+
+component "Notificaciones"
+
+}
+
+package "Persistencia"{
+
+database PostgreSQL
+
+database "Supabase Auth"
+
+component Cloudinary
+
+}
+
+package "Hardware"{
+
+component ESP32
+
+component Torniquete
+
+}
+
+"React Native\nAlumno" --> FastAPI
+"React Native\nMaestro" --> FastAPI
+"React Native\nControl Escolar" --> FastAPI
+"React Native\nDirección" --> FastAPI
+"React Native\nKiosco" --> FastAPI
+
+FastAPI --> Autenticación
+FastAPI --> Usuarios
+FastAPI --> Académico
+FastAPI --> Asistencia
+FastAPI --> Biometría
+FastAPI --> Calificaciones
+FastAPI --> Reinscripción
+FastAPI --> Vehículos
+FastAPI --> Notificaciones
+
+Autenticación --> "Supabase Auth"
+
+Usuarios --> PostgreSQL
+Académico --> PostgreSQL
+Asistencia --> PostgreSQL
+Calificaciones --> PostgreSQL
+Vehículos --> PostgreSQL
+
+Biometría --> ESP32
+
+ESP32 --> Torniquete
+
+Reinscripción --> Cloudinary
+
+@enduml

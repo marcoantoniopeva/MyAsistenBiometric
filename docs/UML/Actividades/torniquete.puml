@@ -1,0 +1,32 @@
+@startuml
+title DA-04 Acceso Biométrico
+
+start
+
+:Cámara captura rostro;
+
+:Enviar imagen;
+
+:Generar embedding;
+
+:Comparar embeddings;
+
+if (¿Coincidencia?) then (Sí)
+
+:Registrar acceso;
+
+:Enviar señal HTTP;
+
+:ESP32 abre torniquete;
+
+:Mostrar ACCESO PERMITIDO;
+
+else
+
+:Mostrar ACCESO DENEGADO;
+
+endif
+
+stop
+
+@enduml

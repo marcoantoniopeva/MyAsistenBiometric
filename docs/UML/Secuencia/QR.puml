@@ -1,0 +1,22 @@
+@startuml
+title SD-10 QR Temporal
+
+actor Alumno
+
+participant App
+
+participant FastAPI
+
+database PostgreSQL
+
+Alumno -> App : Solicitar QR
+
+App -> FastAPI : Generar código
+
+FastAPI -> PostgreSQL : Crear PIN temporal
+
+PostgreSQL --> FastAPI : Código
+
+FastAPI --> App : QR válido 5 minutos
+
+@enduml

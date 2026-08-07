@@ -1,0 +1,68 @@
+@startuml
+title Diagrama de Estados - Ciclo de Vida del Alumno
+
+skinparam shadowing false
+skinparam state {
+    BackgroundColor White
+    BorderColor Black
+}
+
+[*] --> Registrado
+
+Registrado : Alumno creado por\nControl Escolar
+
+Registrado --> PrimerInicio : Primer Login
+
+PrimerInicio --> CambioPassword
+
+CambioPassword --> RegistrarRecuperacion
+
+RegistrarRecuperacion --> RegistrarSelfie
+
+RegistrarSelfie --> Activo
+
+state Activo {
+
+    [*] --> Dashboard
+
+    Dashboard --> ConsultandoCalificaciones
+    ConsultandoCalificaciones --> Dashboard
+
+    Dashboard --> RegistrandoAsistencia
+    RegistrandoAsistencia --> Dashboard
+
+    Dashboard --> SubiendoEvidencias
+    SubiendoEvidencias --> Dashboard
+
+    Dashboard --> ConsultandoCreditos
+    ConsultandoCreditos --> Dashboard
+
+    Dashboard --> DescargandoCredencial
+    DescargandoCredencial --> Dashboard
+
+    Dashboard --> SolicitandoConstancia
+    SolicitandoConstancia --> Dashboard
+
+    Dashboard --> Reinscripcion
+    Reinscripcion --> Dashboard
+
+    Dashboard --> GenerandoQR
+    GenerandoQR --> Dashboard
+
+}
+
+Activo --> Suspendido : Vacaciones / Bloqueo
+
+Suspendido --> Activo : Rehabilitar acceso
+
+Activo --> BajaTemporal : Solicitud del alumno
+
+BajaTemporal --> Activo : Reingreso
+
+Activo --> Egresado : Créditos completos
+
+Egresado --> Titulado : Titulación
+
+Titulado --> [*]
+
+@enduml

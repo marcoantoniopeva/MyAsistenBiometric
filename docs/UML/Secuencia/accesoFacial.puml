@@ -1,0 +1,36 @@
+@startuml
+title SD-04 Acceso Biométrico
+
+actor Alumno
+
+participant Kiosco
+
+participant FastAPI
+
+participant "Face Recognition"
+
+database PostgreSQL
+
+participant ESP32
+
+Alumno -> Kiosco : Se coloca frente a cámara
+
+Kiosco -> FastAPI : Imagen
+
+FastAPI -> "Face Recognition" : Generar embedding
+
+"Face Recognition" --> FastAPI : Embedding
+
+FastAPI -> PostgreSQL : Buscar coincidencia
+
+PostgreSQL --> FastAPI : Usuario encontrado
+
+FastAPI --> Kiosco : Acceso permitido
+
+FastAPI -> ESP32 : HTTP OPEN
+
+ESP32 --> FastAPI : OK
+
+Kiosco --> Alumno : Torniquete abierto
+
+@enduml

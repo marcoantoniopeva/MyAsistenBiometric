@@ -1,0 +1,91 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor Alumno
+actor Maestro
+actor "Control Escolar" as Control
+actor Director
+actor Kiosco
+actor ESP32
+actor "Supabase Auth" as Auth
+actor Cloudinary
+
+rectangle "Sistema de Asistencia Biométrica Escolar"{
+
+usecase "Iniciar Sesión" as UC1
+usecase "Recuperar Contraseña" as UC2
+usecase "Registrar Selfie" as UC3
+usecase "Registrar Asistencia" as UC4
+usecase "Validar Geolocalización" as UC5
+usecase "Reconocimiento Facial" as UC6
+usecase "Consultar Calificaciones" as UC7
+usecase "Consultar Kardex" as UC8
+usecase "Consultar Créditos" as UC9
+usecase "Subir Evidencias" as UC10
+usecase "Descargar Credencial Digital" as UC11
+usecase "Generar QR Temporal" as UC12
+usecase "Solicitar Constancias" as UC13
+usecase "Reinscripción" as UC14
+
+usecase "Gestionar Actividades" as UC15
+usecase "Capturar Calificaciones" as UC16
+usecase "Validar Asistencia" as UC17
+usecase "Consultar Horarios" as UC18
+usecase "Consultar Alumnos" as UC19
+
+usecase "Registrar Alumnos" as UC20
+usecase "Registrar Maestros" as UC21
+usecase "Validar Pagos" as UC22
+usecase "Modificar Calificaciones" as UC23
+usecase "Asignar Créditos" as UC24
+
+usecase "Consultar Reportes" as UC25
+usecase "Seguimiento Académico" as UC26
+usecase "Suspender Plataforma" as UC27
+
+usecase "Abrir Torniquete" as UC28
+
+}
+
+Alumno --> UC1
+Alumno --> UC2
+Alumno --> UC3
+Alumno --> UC4
+Alumno --> UC7
+Alumno --> UC8
+Alumno --> UC9
+Alumno --> UC10
+Alumno --> UC11
+Alumno --> UC12
+Alumno --> UC13
+Alumno --> UC14
+
+Maestro --> UC1
+Maestro --> UC15
+Maestro --> UC16
+Maestro --> UC17
+Maestro --> UC18
+Maestro --> UC19
+
+Control --> UC20
+Control --> UC21
+Control --> UC22
+Control --> UC23
+Control --> UC24
+
+Director --> UC25
+Director --> UC26
+Director --> UC27
+
+Kiosco --> UC6
+
+UC4 .> UC5 : <<include>>
+UC6 .> UC28 : <<include>>
+
+UC1 --> Auth
+UC10 --> Cloudinary
+UC28 --> ESP32
+
+@enduml
