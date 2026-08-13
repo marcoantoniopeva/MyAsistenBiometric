@@ -1,0 +1,357 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Paquetes Requeridos ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tocbibind}
+
+% --- Configuración de Colores y Enlaces ---
+\definecolor{primary}{RGB}{23, 54, 93}
+\definecolor{secondary}{RGB}{47, 117, 181}
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codeblue}{rgb}{0.1,0.2,0.8}
+\definecolor{codegreen}{rgb}{0.1,0.6,0.1}
+\definecolor{codeorange}{rgb}{0.8,0.4,0.0}
+\definecolor{errorred}{rgb}{0.8,0.1,0.1}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    filecolor=secondary,      
+    urlcolor=secondary,
+    pdftitle={Manual Técnico V1 - MyAsistenciaBiometrical}
+}
+
+% --- Configuración de Bloques de Código ---
+\lstset{
+    backgroundcolor=\color{codegray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    stringstyle=\color{codeorange},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    frame=single,
+    rulecolor=\color{lightgray}
+}
+
+% --- Estilos de Títulos ---
+\titleformat{\section}{\Large\bfseries\color{primary}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{secondary}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{primary}}{\thesubsubsection}{1em}{}
+
+% --- Inicio del Documento ---
+\begin{document}
+
+% --- PORTADA ---
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge \bfseries \color{primary} MANUAL TÉCNICO V1 \par}
+    \vspace{1cm}
+    {\Large \bfseries Plataforma de Asistencia Biométrica Escolar y Gestión Académica \par}
+    
+    \vspace{4cm}
+    
+    \begin{flushleft}
+        \large
+        \textbf{Autor:} Marco Antonio Peña Vargas \\
+        \textbf{Fecha:} Agosto 2026 \\
+        \textbf{Versión:} 1.0.0 \\
+        \textbf{Área:} Ingeniería en Sistemas Computacionales \\
+        \textbf{Institución:} Tecnológico de Estudios Superiores del Oriente del Estado de México (TESOEM)
+    \end{flushleft}
+    
+    \vfill
+    {\large Documentación Oficial de Arquitectura, Configuración y Resolución de Errores\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% --- CONTROL DE VERSIONES ---
+\section*{Control de Versiones}
+\addcontentsline{toc}{section}{Control de Versiones}
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{|c|c|X|X|}
+        \hline
+        \textbf{Versión} & \textbf{Fecha} & \textbf{Autor} & \textbf{Cambios} \\
+        \hline
+        1.0.0 & Agosto 2026 & Marco Antonio Peña Vargas & Definición de Arquitectura Limpia, Stack Tecnológico, Setup de Directorios, Configuración Global (Pydantic Settings) y Documentación de Errores de Inicialización. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\newpage
+
+% --- 1. ARQUITECTURA ---
+\section{Arquitectura del Sistema}
+El proyecto se desarrolla bajo el paradigma de \textbf{Clean Architecture} (Arquitectura Limpia) y un enfoque ligero de \textbf{Domain-Driven Design (DDD)}. Esta estructura garantiza que el código sea mantenible, testeable y preparado para entornos de producción, separando claramente las responsabilidades en capas (Presentación, Casos de Uso, Dominio e Infraestructura).
+
+El flujo de información interno del Backend es estrictamente unidireccional y predecible:
+\begin{center}
+    \texttt{\textbf{Cliente $\rightarrow$ Router (API) $\rightarrow$ Service (Lógica) $\rightarrow$ Repository (Datos) $\rightarrow$ PostgreSQL (Supabase)}}
+\end{center}
+
+\subsection{Separación de Responsabilidades en el Backend}
+\begin{itemize}
+    \item \textbf{Routers:} Únicamente reciben la petición HTTP (ej. \texttt{POST /auth/login}), validan el esquema de entrada mediante \texttt{Pydantic} y delegan la ejecución. No contienen consultas SQL ni reglas de negocio.
+    \item \textbf{Services:} Orquestan la lógica de negocio pura. Manejan el flujo de la aplicación (ej. Validar usuario $\rightarrow$ Validar contraseña $\rightarrow$ Crear JWT $\rightarrow$ Registrar auditoría).
+    \item \textbf{Repositories:} Capa exclusiva para el acceso a datos (SELECT, INSERT, UPDATE, DELETE). Aisla al resto de la aplicación de la base de datos subyacente.
+    \item \textbf{Domain / Models / Schemas:} Entidades que representan el modelo del negocio y validadores estrictos de entrada/salida.
+\end{itemize}
+
+% --- 2. STACK TECNOLÓGICO ---
+\section{Stack Tecnológico y Librerías}
+
+\subsection{Backend (Python 3.12)}
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Librería / Tecnología} & \textbf{Propósito dentro del Sistema} \\
+        \hline
+        \textbf{FastAPI} & Framework asíncrono para la creación de la API REST de alto rendimiento. \\
+        \hline
+        \textbf{Uvicorn} & Servidor web ASGI para ejecutar la aplicación FastAPI. \\
+        \hline
+        \textbf{Pydantic v2} & Validación estricta de datos (DTOs) y gestión de variables de entorno mediante \texttt{pydantic-settings}. \\
+        \hline
+        \textbf{SQLAlchemy} & ORM utilizado para interactuar con la base de datos relacional orientada a objetos. \\
+        \hline
+        \textbf{asyncpg} & Driver asíncrono optimizado para conectar con PostgreSQL (Supabase). \\
+        \hline
+        \textbf{Alembic} & Herramienta de migración de base de datos vinculada a SQLAlchemy. \\
+        \hline
+        \textbf{python-jose} & Generación, firma y validación criptográfica de tokens JWT. \\
+        \hline
+        \textbf{passlib (bcrypt)} & Hashing criptográfico seguro para almacenamiento de contraseñas. \\
+        \hline
+        \textbf{opencv-python} & Procesamiento de matrices de imágenes (\textit{headless} sin UI). \\
+        \hline
+        \textbf{face\_recognition} & Motor IA (dlib) encargado de generar embeddings faciales y compararlos. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsection{Frontend (React Native \& Expo SDK 55+)}
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Librería / Tecnología} & \textbf{Propósito dentro del Sistema} \\
+        \hline
+        \textbf{Expo SDK} & Framework para compilar aplicaciones iOS/Android y web unificadas. \\
+        \hline
+        \textbf{React Navigation} & Enrutador principal para la navegación (Stacks, Tabs). \\
+        \hline
+        \textbf{Axios} & Cliente HTTP para el consumo de la API REST de FastAPI. \\
+        \hline
+        \textbf{expo-camera} & Acceso al hardware fotográfico para Kiosco y capturas de perfil. \\
+        \hline
+        \textbf{expo-location} & Acceso al GPS para validar el perímetro del salón de clases. \\
+        \hline
+        \textbf{expo-local-auth} & Interfaz con sensores biométricos nativos (FaceID/Huella dactilar). \\
+        \hline
+        \textbf{NativeWind} & Motor de estilos basado en la utilidad de Tailwind CSS. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+% --- 3. ESTRUCTURA DE CARPETAS ---
+\section{Estructura de Directorios}
+El proyecto adopta una arquitectura modular donde se aíslan las aplicaciones cliente, el servidor, la base de datos y el hardware físico.
+
+\begin{lstlisting}[language=bash, caption=Estructura Raíz del Proyecto]
+MyAsistenciaBiometrical/
+|-- backend/                # API REST (FastAPI + Clean Architecture)
+|   |-- .venv/              # Entorno virtual de Python
+|   |-- app/                # Codigo fuente del backend
+|   |   |-- api/            # Controladores y rutas HTTP
+|   |   |-- application/    # Casos de uso
+|   |   |-- core/           # Configuracion base, excepciones y middlewares
+|   |   |-- database/       # Conexion, sesiones e inicializacion DB
+|   |   |-- domain/         # Entidades puras y reglas de negocio
+|   |   |-- infrastructure/ # Repositorios y servicios externos
+|   |   |-- models/         # Clases de SQLAlchemy
+|   |   |-- schemas/        # Modelos Pydantic (Request/Response)
+|   |   |-- security/       # JWT y hashing
+|   |   |-- services/       # Logica de orquestacion
+|   |   `-- utils/          # Helpers y conversores
+|   |-- tests/              # Pruebas unitarias y de integracion
+|   |-- uploads/            # Archivos estaticos locales
+|   |-- main.py             # Archivo de arranque Uvicorn
+|   `-- requirements.txt
+|-- Database/               # Scripts SQL (schema, triggers, views, RLS)
+|-- docker/                 # Contenedores para BD local o pgAdmin
+|-- docs/                   # UML, diagramas, manuales
+|-- esp32/                  # Firmware C++ (Wi-Fi, HTTP, Relay)
+`-- frontend/
+    |-- kiosk/              # Proyecto Expo para Torniquete
+    `-- mobile/             # Proyecto Expo principal (Alumnos/Maestros)
+        `-- src/            # components, navigation, screens, hooks
+\end{lstlisting}
+
+% --- 4. CONFIGURACIÓN DEL BACKEND ---
+\section{Configuración Base del Backend (\texttt{config.py})}
+
+El archivo central de configuración de la plataforma se ubica en: \texttt{backend/app/core/config.py}. 
+Su responsabilidad principal es gestionar, tipar y validar de forma estricta todas las variables de entorno necesarias para la ejecución segura del sistema, evitando que datos sensibles sean almacenados en texto plano en el código fuente.
+
+\subsection{Funcionamiento de \texttt{pydantic-settings}}
+La aplicación utiliza \texttt{BaseSettings} y \texttt{SettingsConfigDict} de la librería \texttt{pydantic-settings}. Esto proporciona:
+\begin{enumerate}
+    \item \textbf{Carga automática:} Busca variables en el sistema operativo o en el archivo \texttt{.env}.
+    \item \textbf{Validación estricta de tipos:} Si una variable se define como \texttt{int} pero recibe un tipo diferente, FastAPI detiene el arranque (\textit{fail-fast}).
+    \item \textbf{Valores por defecto seguros:} Variables no críticas como SMTP se manejan como \texttt{Optional} o \texttt{str | None}.
+\end{enumerate}
+
+\subsection{Propiedades de \texttt{model\_config}}
+El diccionario de configuración dicta el comportamiento de carga para Pydantic:
+\begin{itemize}
+    \item \texttt{env\_file=".env"}: Indica que las variables pueden leerse de un archivo local.
+    \item \texttt{env\_file\_encoding="utf-8"}: Soporta caracteres especiales en credenciales.
+    \item \texttt{case\_sensitive=True}: Diferencia entre MAYÚSCULAS y minúsculas para los nombres de las variables.
+    \item \texttt{extra="ignore"}: Ignora variables presentes en el archivo \texttt{.env} que no estén definidas explícitamente en la clase.
+\end{itemize}
+
+\subsection{Código Fuente de \texttt{config.py}}
+
+\begin{lstlisting}[language=Python, caption=app/core/config.py]
+"""
+Proyecto: Plataforma de Asistencia Biometrica Escolar
+Modulo: Infraestructura Base
+Archivo: config.py
+Descripcion: Centraliza y valida variables de entorno mediante pydantic.
+Autor: Marco Antonio Pena Vargas
+Fecha de Creacion: 6 Agosto 2026
+"""
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+    """
+    Configuracion global de la aplicacion validada por Pydantic.
+    """
+    # Configuracion general
+    Nombre_Proyecto: str = "Plataforma Escolar con validacion Biometrica"
+    Version_Proyecto: str = "1.0.0"
+    API_Version: str = "/api/v1"
+    ENV: str = "development" 
+    DEBUG: bool = False
+
+    # Configuracion de base de datos
+    DB_URL: str
+    SUPABASE_URL: str
+    SUPABASE_ANON_KEY: str
+    SUPABASE_SERVICE_ROLE_KEY: str | None = None
+
+    # Autenticacion JWT
+    JWT_SECRET: str
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+
+    # Archivos
+    UPLOAD_DIRECTORY: str = "uploads"
+    CLOUDINARY_URL: str | None = None
+
+    # SMTP Correo
+    SMTP_SERVER: str | None = None
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str | None = None
+    SMTP_PASSWORD: str | None = None
+    SMTP_USE_TLS: bool = True
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+        extra="ignore",
+    )
+
+# Instancia unica de configuracion global declarada FUERA de la clase
+settings = Settings()
+\end{lstlisting}
+
+% --- 5. VARIABLES DE ENTORNO ---
+\section{Variables de Entorno y Seguridad}
+
+\subsection{Diferencia Crítica de Permisos en Supabase}
+El sistema interactúa con PostgreSQL utilizando dos niveles de credenciales que \textbf{no deben confundirse}:
+\begin{itemize}
+    \item \textbf{\texttt{SUPABASE\_ANON\_KEY}:} Es la clave pública de la API, restringida por las políticas de seguridad (RLS).
+    \item \textbf{\texttt{SUPABASE\_SERVICE\_ROLE\_KEY}:} Es una llave maestra (\textit{admin key}) que ignora las reglas RLS. \textbf{Exclusiva para el Backend.} Jamás debe exponerse al frontend.
+\end{itemize}
+
+\subsection{Archivo \texttt{.env} de Desarrollo}
+Ubicado en \texttt{backend/.env} (Ignorado en \texttt{.gitignore}). Define los valores reales:
+
+\begin{lstlisting}[language=bash, caption=backend/.env]
+Nombre_Proyecto=Plataforma Escolar con validacion Biometrica
+Version_Proyecto=1.0.0
+API_Version=/api/v1
+ENV=development
+DEBUG=true
+
+DB_URL=TU_DATABASE_URL
+SUPABASE_URL=TU_SUPABASE_URL
+SUPABASE_ANON_KEY=TU_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=TU_SERVICE_ROLE_KEY
+
+JWT_SECRET=TU_SECRETO_JWT
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+UPLOAD_DIRECTORY=uploads
+CLOUDINARY_URL=
+
+SMTP_SERVER=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+SMTP_USE_TLS=true
+\end{lstlisting}
+
+% --- 6. TROUBLESHOOTING ---
+\section{Registro de Errores y Soluciones (Troubleshooting)}
+
+Durante la configuración inicial del módulo \texttt{config.py} y la carga de variables mediante \texttt{pydantic-settings}, se documentaron y resolvieron las siguientes incidencias para asegurar la estabilidad del entorno de desarrollo:
+
+\subsection{Incidencia 1: Error de Ámbito en la Instanciación de la Clase}
+\begin{itemize}
+    \item \textbf{Problema:} \texttt{NameError: name 'Settings' is not defined} al ejecutar las pruebas en \texttt{test\_config.py}.
+    \item \textbf{Causa:} Se definió la instancia global \texttt{settings = Settings()} dentro del bloque de la propia clase \texttt{Settings}. En Python, una clase no está completamente definida hasta que se ejecuta todo su bloque; por lo tanto, no se puede referenciar el nombre de la clase dentro de su propio cuerpo.
+    \item \textbf{Solución aplicada:} Se trasladó la creación de la instancia \texttt{settings = Settings()} \textbf{fuera de la definición de la clase}, dejándola al final del archivo como una variable global en el módulo \texttt{config.py}.
+    \item \textbf{Impacto:} La clase se construye exitosamente y la configuración puede ser importada por otras dependencias del sistema.
+    \item \textbf{Archivos modificados:} \texttt{app/core/config.py}.
+\end{itemize}
+
+\subsection{Incidencia 2: Error de Validación Pydantic por Nomenclatura}
+\begin{itemize}
+    \item \textbf{Problema:} \texttt{ValidationError: 1 validation error for Settings. DB\_URL Field required [type=missing]}.
+    \item \textbf{Causa:} El archivo \texttt{.env} contenía la variable declarada con un error tipográfico (\texttt{DB\_UR}), mientras que el modelo \texttt{Settings} en el código requería estrictamente \texttt{DB\_URL}. Al no existir una coincidencia exacta de nombres, Pydantic bloqueó de inmediato el inicio del servidor, aplicando correctamente el principio \textit{fail-fast}.
+    \item \textbf{Solución aplicada:} Se renombró la variable en el archivo \texttt{.env} de \texttt{DB\_UR} a \texttt{DB\_URL}. Adicionalmente, se verificó que el resto de las variables (como \texttt{JWT\_EXPIRE\_MINUTES} a \texttt{ACCESS\_TOKEN\_EXPIRE\_MINUTES}) coincidieran perfectamente entre el archivo físico y la clase de validación.
+    \item \textbf{Impacto:} Eliminación del error de validación, logrando la lectura íntegra y segura de todas las credenciales de base de datos.
+    \item \textbf{Archivos modificados:} \texttt{.env}.
+\end{itemize}
+
+\end{document}
